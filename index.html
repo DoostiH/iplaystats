@@ -116,6 +116,7 @@ table.t th{font-family:var(--mono);font-size:.72rem;color:var(--muted);font-weig
 <div class="toast" id="toast" hidden></div>
 
 <script src="config.js"></script>
+<script>(function(){var c=(window.SS_CONFIG||{}).analyticsCode;if(c&&/^[a-z0-9-]+$/.test(c)){var s=document.createElement("script");s.async=true;s.src="https://gc.zgo.at/count.js";s.setAttribute("data-goatcounter","https://"+c+".goatcounter.com/count");document.head.appendChild(s)}})();</script>
 <script>
 /* ================= iPlayStats core ================= */
 (function(){
@@ -217,7 +218,9 @@ A.best = store.get("best",{});
 A.pool = {db:null,state:"connecting",canWrite:true,canEdit:false,round:"r0",plays:[],listeners:new Set()};
 A.onPool = fn => {A.pool.listeners.add(fn);return ()=>A.pool.listeners.delete(fn)};
 const poolChanged = () => A.pool.listeners.forEach(f=>{try{f()}catch(e){}});
+A.track = (path,title) => {try{if(window.goatcounter&&window.goatcounter.count)window.goatcounter.count({path,title:title||path,event:true})}catch(e){}};
 A.award = (gameId,points,max) => {
+  A.track("finish/"+gameId);
   const prev=A.best[gameId];
   if(!prev||points>prev.points){A.best[gameId]={points,max};store.set("best",A.best)}
   if(A.pool.db&&A.pool.canWrite&&A.me.team&&points>0){
@@ -376,6 +379,7 @@ function renderGame(g){
   ${!A.me.team?`<p class="lead" style="font-size:.85rem">Tip: pick a team on the home screen so your points count for your team.</p>`:""}
   <div id="stage" style="display:flex;flex-direction:column;gap:16px"></div>`;
   app.querySelector("#back").addEventListener("click",()=>{location.hash="home"});
+  A.track("open/"+g.id,g.title);
   A.curHints=(A.HELP&&A.HELP[g.id]&&A.HELP[g.id].hints)||[];
   try{cleanup=g.mount(app.querySelector("#stage"))||null;const st=app.querySelector("#stage");if(!st.querySelector(".hintwrap")){const c=A.h("section",{class:"card"});st.appendChild(c);A.hintUI(c,false)}}catch(e){app.querySelector("#stage").innerHTML=`<p class="lead">This game hit a problem loading. Go back and try again.</p>`;console.error(e)}
 }

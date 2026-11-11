@@ -9,5 +9,8 @@ window.SS_CONFIG = {
   /* People to thank on the About page. Add names only, and only with their permission, e.g.
      contributors: ["Jane Citizen (game idea: ...)", "Sam Lee (feedback)"], */
   contributors: [],
-  version: "v0.3.1"
+  /* Usage counts with GoatCounter (free, no cookies). Sign up at goatcounter.com, then put your code here,
+     e.g. "iplaystats" for iplaystats.goatcounter.com. Leave "" to turn counting off. */
+  analyticsCode: "",
+  version: "v0.4"
 };

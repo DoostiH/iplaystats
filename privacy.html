@@ -45,7 +45,10 @@ a{color:var(--accent)}
 <li><strong>Fonts.</strong> The app loads its fonts from Google Fonts, so Google receives your IP address when the fonts are downloaded.</li>
 <li><strong>Feedback form.</strong> If you choose to send feedback, the form service processes what you type. Please don't include sensitive personal information.</li>
 </ul>
-<p>The app has no advertising, no analytics trackers and no tracking cookies.</p>
+<ul>
+<li id="gc"><strong>Usage counts.</strong> To learn which games are used, the app counts page visits and when a game is opened or finished, using GoatCounter. GoatCounter doesn't use cookies and doesn't store personal data that identifies you; it keeps totals such as browser type, screen size and approximate country.</li>
+</ul>
+<p>The app has no advertising and no tracking cookies.</p>
 
 <h2>Changes</h2>
 <p>Future versions may add optional accounts, class codes or live class sessions. If that changes what information is collected, this page will be updated before those features go live, and you'll be told what's collected and why.</p>
@@ -54,7 +57,7 @@ a{color:var(--accent)}
 <p id="contact">Questions about privacy? Use the feedback link in the app.</p>
 </main>
 <script>
-(function(){var c=window.SS_CONFIG||{},el=document.getElementById("contact");
+(function(){var c=window.SS_CONFIG||{},el=document.getElementById("contact");if(!c.analyticsCode){var g=document.getElementById("gc");if(g)g.parentNode.removeChild(g)}
  if(c.contactEmail){el.textContent="Questions about privacy? Email ";var s=document.createElement("span");s.style.userSelect="all";s.style.fontWeight="600";s.textContent=c.contactEmail;el.appendChild(s);el.appendChild(document.createTextNode("."))}})();
 </script>
 </body>
