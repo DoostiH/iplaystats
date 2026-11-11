@@ -301,6 +301,20 @@ A.rounds = (el,cfg) => { /* cfg: {id,n,max,render(box,api)} api:{round,add(point
 };
 A.mc = (choices,answer) => { /* shuffle choices keeping answer */ const idx=S.shuffle(choices.map((_,k)=>k));return {choices:idx.map(k=>choices[k]),answer:idx.indexOf(answer)} };
 
+/* ---------- install guide (web build only) ---------- */
+A.installEvt=null;
+window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();A.installEvt=e;if(view==="home")renderHome()});
+window.addEventListener("appinstalled",()=>{A.installEvt=null;store.set("installed",true);if(view==="home")renderHome()});
+function installCard(){
+  if(!window.SS_CONFIG)return "";
+  const standalone=(window.matchMedia&&matchMedia("(display-mode: standalone)").matches)||navigator.standalone===true;
+  if(standalone||store.get("installHidden",false))return "";
+  const ua=navigator.userAgent||"",ios=/iPhone|iPad|iPod/.test(ua)||(/Macintosh/.test(ua)&&"ontouchend" in document),android=/Android/.test(ua);
+  const steps=ios?`<ol style="margin:0;padding-left:20px"><li>Open this page in <strong>Safari</strong>.</li><li>Tap the <strong>Share</strong> button (square with an up arrow).</li><li>Tap <strong>Add to Home Screen</strong>, then <strong>Add</strong>.</li></ol>`
+    :android?`<ol style="margin:0;padding-left:20px"><li>In <strong>Chrome</strong>, tap the <strong>⋮</strong> menu (top right).</li><li>Tap <strong>Add to home screen</strong> (or <strong>Install app</strong>).</li><li>Choose <strong>Install</strong>, not “Create shortcut”.</li></ol>`
+    :`<p>Open this page on your phone, then:</p><ul style="margin:0;padding-left:20px"><li><strong>iPhone:</strong> Safari → Share → Add to Home Screen</li><li><strong>Android:</strong> Chrome → ⋮ → Add to home screen → Install</li></ul>`;
+  return `<section class="card" id="installcard"><div class="row between"><h2>Install iPlayStats on your phone</h2><button class="back" id="hideinst" aria-label="Hide install guide">Hide</button></div><p class="lead">It opens full-screen like a normal app and works offline.</p>${A.installEvt?`<button class="btn" id="doinst" style="align-self:flex-start">Install app</button><p class="lead" style="font-size:.85rem">Or do it from the menu:</p>`:""}${steps}</section>`;
+}
 /* ---------- hub ---------- */
 let filter=store.get("filter","all"),query="",cleanup=null,view="home";
 const app=document.getElementById("app");
@@ -318,6 +332,7 @@ function renderHome(){
     <h1>iPlayStats</h1>
     <p class="lead">Short games for class or after class. Play with your team, build class data together, and learn the ideas behind the tests.</p>
   </header>
+  ${installCard()}
   <section class="card"><div class="row between"><h2>Your team</h2><span class="num lead" style="font-size:.85rem">You are ${A.esc(A.me.nick)}</span></div>
     <div class="row">${A.TEAMS.map(t=>`<button class="chip" data-team="${t.id}" aria-pressed="${A.me.team===t.id}"><span class="dot" style="background:${t.c}"></span>${t.name}</button>`).join("")}</div>
     <div class="status ${A.pool.state==="live"&&A.pool.canWrite?"live":""}"><span class="led"></span><span>${A.statusText()}</span></div></section>
@@ -328,6 +343,8 @@ function renderHome(){
     <div class="row" id="filters"><button class="chip" data-f="all" aria-pressed="${filter==="all"}">All units</button>${Object.entries(A.UNITS).map(([k,u])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${u.name}</button>`).join("")}</div></section>
   <div class="games">${list.map(g=>`<button class="gcard" data-g="${g.id}"><div class="row">${g.star?`<span class="tag star">Start here</span>`:""}<span class="tag">${g.mode}</span></div><h3>${A.esc(g.title)}</h3><p>${A.esc(g.blurb)}</p>${A.best[g.id]?`<span class="best">Best: ${A.best[g.id].points}/${A.best[g.id].max}</span>`:""}</button>`).join("")||`<p class="lead">No games match that search.</p>`}</div>
   ${window.SS_CONFIG?`<footer class="row" style="justify-content:center;gap:16px;font-size:.82rem;color:var(--muted);padding-top:8px"><span>© ${new Date().getFullYear()>2026?"2026–"+new Date().getFullYear():"2026"} ${A.esc(window.SS_CONFIG.owner||"")}. All rights reserved.</span><a href="about.html" style="color:var(--muted)">About &amp; credits</a><a href="privacy.html" style="color:var(--muted)">Privacy</a>${window.SS_CONFIG.feedbackUrl?`<a href="${A.esc(window.SS_CONFIG.feedbackUrl)}" target="_blank" rel="noopener" style="color:var(--muted)">Send feedback</a>`:""}${window.SS_CONFIG.contactEmail?`<span>Contact: <span style="user-select:all">${A.esc(window.SS_CONFIG.contactEmail)}</span></span>`:""}<span>Free beta ${A.esc(window.SS_CONFIG.version||"")}</span></footer>`:""}`;
+  const hi=app.querySelector("#hideinst");if(hi)hi.addEventListener("click",()=>{store.set("installHidden",true);renderHome();A.toast("Install steps are always on the About page.")});
+  const di=app.querySelector("#doinst");if(di)di.addEventListener("click",async()=>{const e=A.installEvt;if(!e)return;e.prompt();try{await e.userChoice}catch(x){}A.installEvt=null;renderHome()});
   app.querySelectorAll("[data-team]").forEach(b=>b.addEventListener("click",()=>{A.me.team=b.dataset.team;store.set("team",A.me.team);renderHome()}));
   app.querySelectorAll("[data-f]").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.f;store.set("filter",filter);renderHome()}));
   app.querySelectorAll("[data-g]").forEach(b=>b.addEventListener("click",()=>{location.hash=b.dataset.g}));
