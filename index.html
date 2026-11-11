@@ -1,0 +1,953 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="22 short games for learning statistics and data science, for class or after class.">
+<meta name="theme-color" content="#2B55E0">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="iPlayStats">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>iPlayStats</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a phone-first arcade hub — one column of game cards, each game opens full-width with a back bar. */
+:root{
+  --bg:#EEF2F5; --panel:#FFFFFF; --ink:#11212C; --muted:#5A6B77; --line:#D3DCE3; --soft:#E4EAF0;
+  --pop:#D99A12; --mean:#2B55E0; --mean-soft:#DCE4FC; --curve:#C2185B; --ok:#1B8A5A; --bad:#C23A2B;
+  --t1:#2B55E0; --t2:#C2185B; --t3:#1B8A5A; --t4:#D99A12; --on-accent:#FFFFFF;
+  --display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0D161D; --panel:#15212A; --ink:#E7EEF3; --muted:#93A4B1; --line:#283844; --soft:#1C2A35;
+  --pop:#F0B53A; --mean:#7C9BFF; --mean-soft:#1E2B55; --curve:#FF6FA5; --ok:#4CC98D; --bad:#FF7A6B;
+  --t1:#7C9BFF; --t2:#FF6FA5; --t3:#4CC98D; --t4:#F0B53A; --on-accent:#0D161D; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D161D; --panel:#15212A; --ink:#E7EEF3; --muted:#93A4B1; --line:#283844; --soft:#1C2A35;
+  --pop:#F0B53A; --mean:#7C9BFF; --mean-soft:#1E2B55; --curve:#FF6FA5; --ok:#4CC98D; --bad:#FF7A6B;
+  --t1:#7C9BFF; --t2:#FF6FA5; --t3:#4CC98D; --t4:#F0B53A; --on-accent:#0D161D; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 48px}
+.wrap{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+h1,h2,h3{font-family:var(--display);margin:0;text-wrap:balance}
+h1{font-size:2.2rem;font-weight:800;letter-spacing:-.02em;line-height:1.05}
+h2{font-size:1.2rem;font-weight:600}
+h3{font-size:1rem;font-weight:600}
+p{margin:0}
+.eyebrow{font-family:var(--mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted)}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.between{justify-content:space-between}
+.chip{font:inherit;font-size:.86rem;border:1.5px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer;display:inline-flex;gap:6px;align-items:center}
+.chip .dot{width:9px;height:9px;border-radius:50%}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:var(--panel)}
+.tag{font-family:var(--mono);font-size:.7rem;padding:2px 8px;border-radius:999px;background:var(--soft);color:var(--muted);white-space:nowrap}
+.tag.star{background:var(--mean-soft);color:var(--mean)}
+button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--mean);outline-offset:2px}
+.btn{font:inherit;font-weight:600;border:0;border-radius:12px;padding:11px 18px;cursor:pointer;background:var(--mean);color:var(--on-accent);font-size:.98rem}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line);font-weight:500;font-size:.9rem;padding:9px 14px}
+.btn.warn{background:var(--curve)}
+.seg{display:inline-flex;flex-wrap:wrap;border:1.5px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{font:inherit;font-family:var(--mono);font-size:.86rem;border:0;background:transparent;color:var(--ink);padding:8px 12px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--mean);color:var(--on-accent)}
+input[type=range]{width:100%;accent-color:var(--mean)}
+input[type=search],select{font:inherit;width:100%;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--panel);color:var(--ink)}
+svg{display:block;width:100%;height:auto;max-width:100%}
+.axis{font-family:var(--mono);font-size:9px;fill:var(--muted)}
+.big{font-family:var(--display);font-size:2.2rem;font-weight:800;color:var(--mean);line-height:1;font-variant-numeric:tabular-nums}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.stat{display:flex;flex-direction:column;gap:2px;min-width:0}
+.stat b{font-family:var(--mono);font-weight:500;font-size:1.05rem;font-variant-numeric:tabular-nums}
+.stat span{font-size:.75rem;color:var(--muted)}
+.status{font-size:.8rem;color:var(--muted);display:flex;gap:6px;align-items:center}
+.status .led{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none}
+.status.live .led{background:var(--ok)}
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.gcard{text-align:left;font:inherit;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;cursor:pointer;display:flex;flex-direction:column;gap:8px;min-width:0}
+.gcard:hover{border-color:var(--mean)}
+.gcard p{font-size:.86rem;color:var(--muted)}
+.gcard .best{font-family:var(--mono);font-size:.75rem;color:var(--ok)}
+.board{display:flex;flex-direction:column;gap:8px}
+.bar{height:8px;border-radius:4px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:4px}
+.topbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px;display:flex;gap:10px;align-items:center}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.back{font:inherit;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:10px;padding:7px 12px;cursor:pointer}
+.stem{font-size:1rem}
+.choices{display:flex;flex-direction:column;gap:8px}
+.choice{font:inherit;text-align:left;border:1.5px solid var(--line);background:var(--panel);color:var(--ink);border-radius:12px;padding:11px 14px;cursor:pointer}
+.choice:hover:not([disabled]){border-color:var(--mean)}
+.choice.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,var(--panel))}
+.choice.wrong{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 10%,var(--panel))}
+.choice[disabled]{cursor:default}
+.feedback{border-left:4px solid var(--ok);padding:10px 12px;background:var(--bg);border-radius:0 10px 10px 0}
+.feedback.no{border-left-color:var(--bad)}
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:22px;height:6px;border-radius:3px;background:var(--line)}
+.dots i.ok{background:var(--ok)}.dots i.no{background:var(--bad)}.dots i.cur{background:var(--mean)}
+.role{font-family:var(--mono);font-size:.75rem;padding:3px 10px;border-radius:999px;background:var(--mean-soft);color:var(--mean);align-self:flex-start}
+table.t{border-collapse:collapse;width:100%;font-size:.85rem}
+table.t th,table.t td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+table.t th{font-family:var(--mono);font-size:.72rem;color:var(--muted);font-weight:500;text-transform:uppercase;letter-spacing:.05em}
+.scroll{overflow-x:auto;max-width:100%}
+.legend{display:flex;flex-wrap:wrap;gap:12px;font-size:.78rem;color:var(--muted)}
+.legend i{display:inline-block;width:14px;height:3px;vertical-align:middle;margin-right:5px;border-radius:2px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--panel);padding:10px 16px;border-radius:12px;font-size:.9rem;z-index:20;max-width:calc(100% - 32px)}
+.drop{animation:drop .45s ease-out both}
+@keyframes drop{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){.drop{animation:none}}
+@media (max-width:440px){h1{font-size:1.85rem}.games{grid-template-columns:minmax(0,1fr)}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="config.js"></script>
+<script>
+/* ================= iPlayStats core ================= */
+(function(){
+const A = window.APP = {games:[]};
+A.reg = g => A.games.push(g);
+
+/* ---------- units ---------- */
+A.UNITS = {
+  intro:{name:"Introductory Statistics and Data Exploration"},
+  prob:{name:"Probability and Random Variables"},
+  inf:{name:"Statistical Inference"},
+  reg:{name:"Regression Modelling"},
+  ds:{name:"Introduction to Data Science and Machine Learning"},
+  bas:{name:"Basic Applied Statistics"}
+};
+A.TEAMS = [{id:"gauss",name:"Team Gauss",c:"var(--t1)"},{id:"nightingale",name:"Team Nightingale",c:"var(--t2)"},{id:"fisher",name:"Team Fisher",c:"var(--t3)"},{id:"bayes",name:"Team Bayes",c:"var(--t4)"}];
+
+/* ---------- test finder ---------- */
+const IA="Statistical Inference; Basic Applied Statistics", BA="Basic Applied Statistics", RG="Regression Modelling";
+A.TESTS = [
+ ["Comparing means","One-sample t-test","One mean vs a target value",IA],
+ ["Comparing means","Two-sample (independent) t-test","Means of two separate groups",IA],
+ ["Comparing means","Paired t-test","Two measurements on the same subjects",IA],
+ ["Comparing means","One-way ANOVA","Means of 3+ groups, one factor",BA],
+ ["Comparing means","Two-way ANOVA","Two factors and their interaction",BA],
+ ["Proportions and categorical data","One-sample proportion test","One proportion vs a target value",IA],
+ ["Proportions and categorical data","Two-sample proportion test","Proportions of two groups",IA],
+ ["Proportions and categorical data","Chi-square goodness-of-fit","One categorical variable vs an expected distribution",IA],
+ ["Proportions and categorical data","Chi-square test of independence","Association between two categorical variables",IA],
+ ["Nonparametric alternatives","Sign test / Wilcoxon signed-rank","Instead of one-sample or paired t-test",BA],
+ ["Nonparametric alternatives","Mann–Whitney U","Instead of two-sample t-test",BA],
+ ["Nonparametric alternatives","Kruskal–Wallis","Instead of one-way ANOVA",BA],
+ ["Nonparametric alternatives","Friedman","Instead of repeated-measures or blocked ANOVA",BA],
+ ["Simulation-based inference","Bootstrap confidence interval","Interval estimate without formula assumptions","Statistical Inference"],
+ ["Simulation-based inference","Randomisation (permutation) test","Group comparison without formula assumptions","Statistical Inference"],
+ ["Relationships and models","Test for correlation","Linear association between two numeric variables",RG],
+ ["Relationships and models","t-test for a regression coefficient","Whether a predictor matters, others held constant",RG],
+ ["Relationships and models","F-test (overall or nested models)","Comparing a fuller model with a simpler one",RG],
+ ["Relationships and models","Wald / likelihood-ratio test (logistic)","Predictors of a binary outcome",RG],
+ ["Model evaluation","Train/test split and cross-validation","Checking a predictive model on unseen data","Introduction to Data Science and Machine Learning"]
+];
+
+/* ---------- random + stats ---------- */
+const S = A.S = {};
+S.mulberry = a => () => {a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+S.r = Math.random;
+S.unif = (a,b) => a + (b-a)*S.r();
+S.int = (a,b) => Math.floor(S.unif(a,b+1));
+S.pick = arr => arr[Math.floor(S.r()*arr.length)];
+S.shuffle = arr => {const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(S.r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+S.norm = (m=0,s=1) => {let u=0,v=0;while(!u)u=S.r();while(!v)v=S.r();return m+s*Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)};
+S.mean = a => a.reduce((x,y)=>x+y,0)/a.length;
+S.sd = a => {const m=S.mean(a);return Math.sqrt(a.reduce((x,y)=>x+(y-m)**2,0)/(a.length-1))};
+S.median = a => {const b=a.slice().sort((x,y)=>x-y),n=b.length;return n%2?b[(n-1)/2]:(b[n/2-1]+b[n/2])/2};
+S.cor = (x,y) => {const mx=S.mean(x),my=S.mean(y);let sxy=0,sxx=0,syy=0;for(let i=0;i<x.length;i++){sxy+=(x[i]-mx)*(y[i]-my);sxx+=(x[i]-mx)**2;syy+=(y[i]-my)**2}return sxy/Math.sqrt(sxx*syy)};
+S.fmt = (x,d=2) => (x==null||!isFinite(x))?"—":(+x).toFixed(d);
+S.pfmt = p => p<0.001?"< 0.001":p.toFixed(3);
+function erf(x){const t=1/(1+0.3275911*Math.abs(x));const y=1-(((((1.061405429*t-1.453152027)*t)+1.421413741)*t-0.284496736)*t+0.254829592)*t*Math.exp(-x*x);return x>=0?y:-y}
+S.ncdf = z => 0.5*(1+erf(z/Math.SQRT2));
+S.npdf = (x,m=0,s=1) => Math.exp(-0.5*((x-m)/s)**2)/(s*Math.sqrt(2*Math.PI));
+S.qnorm = p => {const a=[-39.6968302866538,220.946098424521,-275.928510446969,138.357751867269,-30.6647980661472,2.50662827745924],b=[-54.4760987982241,161.585836858041,-155.698979859887,66.8013118877197,-13.2806815528857],c=[-0.00778489400243029,-0.322396458041136,-2.40075827716184,-2.54973253934373,4.37466414146497,2.93816398269878],d=[0.00778469570904146,0.32246712907004,2.445134137143,3.75440866190742];const pl=0.02425;let q,r;if(p<pl){q=Math.sqrt(-2*Math.log(p));return(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)}if(p<=1-pl){q=p-0.5;r=q*q;return(((((a[0]*r+a[1])*r+a[2])*r+a[3])*r+a[4])*r+a[5])*q/(((((b[0]*r+b[1])*r+b[2])*r+b[3])*r+b[4])*r+1)}q=Math.sqrt(-2*Math.log(1-p));return-(((((c[0]*q+c[1])*q+c[2])*q+c[3])*q+c[4])*q+c[5])/((((d[0]*q+d[1])*q+d[2])*q+d[3])*q+1)};
+function lgamma(x){const g=[76.18009172947146,-86.50532032941677,24.01409824083091,-1.231739572450155,0.1208650973866179e-2,-0.5395239384953e-5];let y=x,t=x+5.5;t-=(x+0.5)*Math.log(t);let s=1.000000000190015;for(let j=0;j<6;j++)s+=g[j]/++y;return -t+Math.log(2.5066282746310005*s/x)}
+function betacf(a,b,x){let m,m2,aa,c=1,d=1-(a+b)*x/(a+1),del,h,qab=a+b,qap=a+1,qam=a-1;if(Math.abs(d)<1e-30)d=1e-30;d=1/d;h=d;for(m=1;m<=200;m++){m2=2*m;aa=m*(b-m)*x/((qam+m2)*(a+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;h*=d*c;aa=-(a+m)*(qab+m)*x/((a+m2)*(qap+m2));d=1+aa*d;if(Math.abs(d)<1e-30)d=1e-30;c=1+aa/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;del=d*c;h*=del;if(Math.abs(del-1)<3e-12)break}return h}
+S.ibeta = (x,a,b) => {if(x<=0)return 0;if(x>=1)return 1;const bt=Math.exp(lgamma(a+b)-lgamma(a)-lgamma(b)+a*Math.log(x)+b*Math.log(1-x));return x<(a+1)/(a+b+2)?bt*betacf(a,b,x)/a:1-bt*betacf(b,a,1-x)/b};
+S.tcdf = (t,df) => {const x=df/(df+t*t),p=0.5*S.ibeta(x,df/2,0.5);return t>0?1-p:p};
+S.tp2 = (t,df) => 2*(1-S.tcdf(Math.abs(t),df));
+S.tq = (p,df) => {let lo=-60,hi=60;for(let i=0;i<80;i++){const m=(lo+hi)/2;if(S.tcdf(m,df)<p)lo=m;else hi=m}return (lo+hi)/2};
+S.fp = (f,d1,d2) => f<=0?1:S.ibeta(d2/(d2+d1*f),d2/2,d1/2);
+function gser(a,x){let sum=1/a,del=sum,ap=a;for(let n=0;n<300;n++){ap++;del*=x/ap;sum+=del;if(Math.abs(del)<Math.abs(sum)*1e-12)break}return sum*Math.exp(-x+a*Math.log(x)-lgamma(a))}
+function gcf(a,x){let b=x+1-a,c=1e30,d=1/b,h=d;for(let i=1;i<300;i++){const an=-i*(i-a);b+=2;d=an*d+b;if(Math.abs(d)<1e-30)d=1e-30;c=b+an/c;if(Math.abs(c)<1e-30)c=1e-30;d=1/d;const del=d*c;h*=del;if(Math.abs(del-1)<1e-12)break}return Math.exp(-x+a*Math.log(x)-lgamma(a))*h}
+S.chip = (x,df) => {if(x<=0)return 1;const a=df/2,xx=x/2;return xx<a+1?1-gser(a,xx):gcf(a,xx)};
+S.binom = (n,k,p) => {let c=1;for(let i=0;i<k;i++)c=c*(n-i)/(i+1);return c*p**k*(1-p)**(n-k)};
+S.pois = (l,k) => {let r=Math.exp(-l);for(let i=1;i<=k;i++)r*=l/i;return r};
+
+/* ---------- charts ---------- */
+const C = A.C = {};
+C.W = 360;
+C.scale = (d0,d1,r0,r1) => v => r0+(v-d0)/(d1-d0)*(r1-r0);
+C.xaxis = (sx,y,lo,hi,step,fmt=v=>v,label="") => {let s=`<line x1="${sx(lo)}" x2="${sx(hi)}" y1="${y}" y2="${y}" stroke="var(--line)"/>`;for(let t=lo;t<=hi+1e-9;t+=step){const v=+t.toFixed(6);s+=`<line x1="${sx(v)}" x2="${sx(v)}" y1="${y}" y2="${y+4}" stroke="var(--line)"/><text class="axis" x="${sx(v)}" y="${y+14}" text-anchor="middle">${fmt(v)}</text>`}if(label)s+=`<text class="axis" x="${sx(hi)}" y="${y+26}" text-anchor="end">${label}</text>`;return s};
+C.yaxis = (sy,x,lo,hi,step,fmt=v=>v) => {let s=`<line x1="${x}" x2="${x}" y1="${sy(lo)}" y2="${sy(hi)}" stroke="var(--line)"/>`;for(let t=lo;t<=hi+1e-9;t+=step){const v=+t.toFixed(6);s+=`<line x1="${x-4}" x2="${x}" y1="${sy(v)}" y2="${sy(v)}" stroke="var(--line)"/><text class="axis" x="${x-6}" y="${sy(v)+3}" text-anchor="end">${fmt(v)}</text>`}return s};
+C.svg = (h,inner,label) => `<svg viewBox="0 0 ${C.W} ${h}" role="img" aria-label="${A.esc(label||"chart")}">${inner}</svg>`;
+C.bars = (labels,vals,opts={}) => {const H=opts.h||170,b=H-34,t=12,L=30,R=C.W-8,mx=opts.max||Math.max(1,...vals),bw=(R-L)/vals.length;let s="";const sy=C.scale(0,mx,b,t);s+=C.yaxis(sy,L,0,mx,niceStep(mx),v=>opts.pct?Math.round(v*100)+"%":+v.toFixed(2));vals.forEach((v,i)=>{s+=`<rect x="${L+i*bw+bw*0.15}" y="${sy(v)}" width="${bw*0.7}" height="${b-sy(v)}" rx="2" fill="${(opts.colors&&opts.colors[i])||"var(--mean)"}"/><text class="axis" x="${L+i*bw+bw/2}" y="${b+14}" text-anchor="middle">${A.esc(labels[i])}</text>`});if(opts.ref!=null)s+=`<line x1="${L}" x2="${R}" y1="${sy(opts.ref)}" y2="${sy(opts.ref)}" stroke="var(--curve)" stroke-dasharray="4 3" stroke-width="1.5"/>`;return C.svg(H,s,opts.label)};
+function niceStep(mx){const raw=mx/4,p=10**Math.floor(Math.log10(raw)),m=raw/p;return (m<1.5?1:m<3?2:m<7?5:10)*p}
+C.nice = niceStep;
+
+/* ---------- utils ---------- */
+A.esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+A.h = (tag,attrs={},html="") => {const e=document.createElement(tag);for(const k in attrs){if(k==="class")e.className=attrs[k];else e.setAttribute(k,attrs[k])}e.innerHTML=html;return e};
+const store = A.store = {get(k,d){try{const v=localStorage.getItem("ss."+k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem("ss."+k,JSON.stringify(v))}catch(e){}}};
+let toastT; A.toast = msg => {const t=document.getElementById("toast");t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>t.hidden=true,2600)};
+
+/* ---------- player ---------- */
+const ADJ=["Curious","Brave","Clever","Swift","Calm","Bold","Bright","Lucky"],ANI=["Quokka","Wombat","Numbat","Echidna","Bilby","Platypus","Cockatoo","Kookaburra"];
+A.me = {nick:store.get("nick",null),team:store.get("team",null)};
+if(!A.me.nick){A.me.nick=S.pick(ADJ)+" "+S.pick(ANI);store.set("nick",A.me.nick)}
+A.best = store.get("best",{});
+
+/* ---------- class pool (db) ---------- */
+A.pool = {db:null,state:"connecting",canWrite:true,canEdit:false,round:"r0",plays:[],listeners:new Set()};
+A.onPool = fn => {A.pool.listeners.add(fn);return ()=>A.pool.listeners.delete(fn)};
+const poolChanged = () => A.pool.listeners.forEach(f=>{try{f()}catch(e){}});
+A.award = (gameId,points,max) => {
+  const prev=A.best[gameId];
+  if(!prev||points>prev.points){A.best[gameId]={points,max};store.set("best",A.best)}
+  if(A.pool.db&&A.pool.canWrite&&A.me.team&&points>0){
+    A.pool.db.collection("plays").add({round:A.pool.round,game:gameId,team:A.me.team,points,at:Date.now()}).catch(err=>{if(err&&err.code==="invalid_argument"){A.pool.canWrite=false;poolChanged()}});
+  }
+  if(!A.pool.db){A.toast(`You scored ${points}/${max}. Best scores are saved on this device.`);return}
+  A.toast(A.me.team?`+${points} points for ${A.TEAMS.find(t=>t.id===A.me.team).name}`:`You scored ${points}. Pick a team on the home screen to earn team points.`);
+};
+async function connect(){
+  const use=window.claude&&window.claude.use?n=>window.claude.use(n):async()=>null;
+  let db=null,user=null;
+  try{[db,user]=await Promise.all([use("db"),use("user")])}catch(e){}
+  if(user){try{A.pool.canEdit=!!(await user.canEdit())}catch(e){}try{if((await user.can("data.write"))===false)A.pool.canWrite=false}catch(e){}}
+  if(!db){A.pool.state="local";poolChanged();return}
+  A.pool.db=db;
+  let unsub=null;const timer=setTimeout(()=>{if(A.pool.state==="connecting"){A.pool.state="stale";poolChanged()}},10000);
+  const watch=()=>{if(unsub)unsub();A.pool.plays=[];
+    unsub=db.collection("plays").where("round","==",A.pool.round).limit(1000).onSnapshot(snap=>{
+      A.pool.plays=snap.docs.map(d=>d.data()||{}).filter(p=>A.TEAMS.some(t=>t.id===p.team)&&typeof p.points==="number"&&p.points>=0&&p.points<=200);
+      if(!snap.metadata.fromCache){A.pool.state="live";clearTimeout(timer)}poolChanged();
+    },()=>{clearTimeout(timer);A.pool.state="local";A.pool.db=null;poolChanged()})};
+  db.doc("settings/round").onSnapshot(snap=>{const d=snap.exists?snap.data():null;const r=d&&typeof d.round==="string"&&/^r\d+$/.test(d.round)?d.round:"r0";if(r!==A.pool.round||!unsub){A.pool.round=r;watch();poolChanged()}},()=>{if(!unsub)watch()});
+}
+A.statusText = () => ({connecting:"Connecting to the class pool…",
+  live:A.pool.canWrite?"Live: your points and class data join the class pool.":"Live, view-only: you can watch the class, but your results stay on this device.",
+  stale:"The class pool hasn't answered yet. Your results are saved on this device.",
+  local:"Solo mode: your best scores are saved on this device only."})[A.pool.state];
+
+/* ---------- quiz engine ---------- */
+/* cfg: {id, intro, n, gen(i) -> {role?, html, choices[], answer, explain, after?}, points=10} */
+A.quiz = (el,cfg) => {
+  const pts=cfg.points||10;let i=0,score=0,res=[],q=null,step=0;
+  const box=A.h("div",{class:"card"});el.appendChild(box);
+  const start=()=>{i=0;score=0;res=[];next()};
+  const next=()=>{q=cfg.gen(i);step=0;draw()};
+  const cur=()=>q.steps?q.steps[step]:q;
+  function draw(){
+    const s=cur();
+    box.innerHTML=`<div class="row between"><div class="dots">${Array.from({length:cfg.n},(_,k)=>`<i class="${k<res.length?(res[k]?"ok":"no"):k===i?"cur":""}"></i>`).join("")}</div><span class="num lead">${score} pts</span></div>`+
+      (q.role?`<span class="role">Your role: ${A.esc(q.role)}</span>`:"")+
+      (step===0&&q.html?`<div class="stem">${q.html}</div>`:"")+(s.html&&q.steps?`<div class="stem">${s.html}</div>`:"")+
+      `<div class="choices">${s.choices.map((c,k)=>`<button class="choice" data-k="${k}">${c}</button>`).join("")}</div><div class="fb"></div>`;
+    box.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>answer(+b.dataset.k)));
+  }
+  function answer(k){
+    const s=cur(),ok=k===s.answer;
+    box.querySelectorAll(".choice").forEach((b,j)=>{b.disabled=true;if(j===s.answer)b.classList.add("right");else if(j===k)b.classList.add("wrong")});
+    const last=!q.steps||step===q.steps.length-1;
+    if(ok)score+=q.steps?Math.round(pts/q.steps.length):pts;
+    const fb=box.querySelector(".fb");
+    fb.innerHTML=`<div class="feedback ${ok?"":"no"}"><p><strong>${ok?"Correct.":"Not quite."}</strong> ${s.explain||""}</p></div><div class="row" style="margin-top:10px"><button class="btn" id="qn">${last?(i===cfg.n-1?"See results":"Next"):"Continue"}</button></div>`;
+    if(q.steps&&!ok)q._miss=true;
+    box.querySelector("#qn").addEventListener("click",()=>{
+      if(!last){step++;draw();return}
+      res.push(q.steps?!q._miss:ok);i++;
+      if(i<cfg.n)next();else finish();
+    });
+  }
+  function finish(){
+    const max=cfg.n*pts;A.award(cfg.id,score,max);
+    box.innerHTML=`<h2>${score} / ${max} points</h2><p class="lead">${score>=max*0.8?"Excellent work.":score>=max*0.5?"Good effort. Play again to lock in the ideas.":"Tricky one. Talk the explanations through with your team, then try again."}</p><div class="row"><button class="btn" id="again">Play again</button></div>`;
+    box.querySelector("#again").addEventListener("click",start);
+  }
+  if(cfg.intro){box.innerHTML=`<p>${cfg.intro}</p><div class="row"><button class="btn" id="go">Start</button></div>`;box.querySelector("#go").addEventListener("click",start)}else start();
+};
+/* score helper for interactive games: n rounds, custom per-round scoring */
+A.rounds = (el,cfg) => { /* cfg: {id,n,max,render(box,api)} api:{round,add(points),next()} */
+  let r=0,score=0;const box=A.h("div",{class:"card"});el.appendChild(box);
+  const api={get round(){return r},add:p=>{score+=p},get score(){return score},
+    next:()=>{r++;if(r<cfg.n)paint();else{const max=cfg.n*cfg.max;A.award(cfg.id,Math.round(score),max);box.innerHTML=`<h2>${Math.round(score)} / ${max} points</h2><p class="lead">${score>=max*0.8?"Excellent work.":"Play again to sharpen your eye."}</p><div class="row"><button class="btn" id="again">Play again</button></div>`;box.querySelector("#again").addEventListener("click",()=>{r=0;score=0;paint()})}}};
+  const paint=()=>{box.innerHTML=`<div class="row between"><span class="eyebrow">Round ${r+1} of ${cfg.n}</span><span class="num lead">${Math.round(score)} pts</span></div><div class="body" style="display:flex;flex-direction:column;gap:12px"></div>`;cfg.render(box.querySelector(".body"),api)};
+  paint();
+};
+A.mc = (choices,answer) => { /* shuffle choices keeping answer */ const idx=S.shuffle(choices.map((_,k)=>k));return {choices:idx.map(k=>choices[k]),answer:idx.indexOf(answer)} };
+
+/* ---------- hub ---------- */
+let filter=store.get("filter","all"),query="",cleanup=null,view="home";
+const app=document.getElementById("app");
+function unitTags(g){return g.units.map(([u,l])=>`<span class="tag">${A.esc(A.UNITS[u].name)} · ULO ${l.join(", ")}</span>`).join("")}
+function renderHome(){
+  view="home";
+  const counts=Object.fromEntries(A.TEAMS.map(t=>[t.id,0]));
+  A.pool.plays.forEach(p=>counts[p.team]+=p.points);
+  const mx=Math.max(1,...Object.values(counts));
+  const q=query.toLowerCase();
+  const list=A.games.filter(g=>(filter==="all"||g.units.some(u=>u[0]===filter))&&(!q||(g.title+" "+g.topics+" "+g.blurb+" "+g.units.map(u=>A.UNITS[u[0]].name).join(" ")).toLowerCase().includes(q)));
+  app.innerHTML=`
+  <header style="display:flex;flex-direction:column;gap:8px">
+    <span class="eyebrow">Learn statistics by playing together</span>
+    <h1>iPlayStats</h1>
+    <p class="lead">Short games for class or after class. Play with your team, build class data together, and learn the ideas behind the tests.</p>
+  </header>
+  <section class="card"><div class="row between"><h2>Your team</h2><span class="num lead" style="font-size:.85rem">You are ${A.esc(A.me.nick)}</span></div>
+    <div class="row">${A.TEAMS.map(t=>`<button class="chip" data-team="${t.id}" aria-pressed="${A.me.team===t.id}"><span class="dot" style="background:${t.c}"></span>${t.name}</button>`).join("")}</div>
+    <div class="status ${A.pool.state==="live"&&A.pool.canWrite?"live":""}"><span class="led"></span><span>${A.statusText()}</span></div></section>
+  ${A.pool.state==="local"?`<section class="card"><h2>Your progress</h2><div class="stats"><div class="stat"><b>${Object.keys(A.best).filter(k=>A.games.some(g=>g.id===k)).length} / ${A.games.length}</b><span>games played</span></div><div class="stat"><b>${Object.values(A.best).reduce((a,b)=>a+b.points,0)}</b><span>total best points</span></div><div class="stat"><b>${A.me.team?A.TEAMS.find(t=>t.id===A.me.team).name.replace("Team ",""):"—"}</b><span>your team</span></div></div><p class="lead" style="font-size:.85rem">Class leaderboards and live class sessions are coming in a later version.</p></section>`:`<section class="card"><h2>Team leaderboard this round</h2><div class="board">${A.TEAMS.map(t=>`<div><div class="row between"><span>${t.name}</span><b class="num" style="font-weight:500">${counts[t.id]}</b></div><div class="bar"><i style="width:${counts[t.id]/mx*100}%;background:${t.c}"></i></div></div>`).join("")}</div>
+    ${A.pool.db&&A.pool.canEdit?`<div class="row"><button class="btn ghost" id="newround">Start a new round</button><span class="lead" id="rn" style="font-size:.85rem">Lecturer only: resets the leaderboard and class data.</span></div>`:""}</section>`}
+  <section class="card"><div class="row between"><h2>Games</h2><button class="btn ghost" id="tf">Test finder</button></div>
+    <input type="search" id="q" placeholder="Search games or topics, e.g. ANOVA, p-value, Bayes" value="${A.esc(query)}" aria-label="Search games">
+    <div class="row" id="filters"><button class="chip" data-f="all" aria-pressed="${filter==="all"}">All units</button>${Object.entries(A.UNITS).map(([k,u])=>`<button class="chip" data-f="${k}" aria-pressed="${filter===k}">${u.name}</button>`).join("")}</div></section>
+  <div class="games">${list.map(g=>`<button class="gcard" data-g="${g.id}"><div class="row">${g.star?`<span class="tag star">Start here</span>`:""}<span class="tag">${g.mode}</span></div><h3>${A.esc(g.title)}</h3><p>${A.esc(g.blurb)}</p>${A.best[g.id]?`<span class="best">Best: ${A.best[g.id].points}/${A.best[g.id].max}</span>`:""}</button>`).join("")||`<p class="lead">No games match that search.</p>`}</div>
+  ${window.SS_CONFIG?`<footer class="row" style="justify-content:center;gap:16px;font-size:.82rem;color:var(--muted);padding-top:8px"><span>© ${new Date().getFullYear()>2026?"2026–"+new Date().getFullYear():"2026"} ${A.esc(window.SS_CONFIG.owner||"")}. All rights reserved.</span><a href="about.html" style="color:var(--muted)">About &amp; credits</a><a href="privacy.html" style="color:var(--muted)">Privacy</a>${window.SS_CONFIG.feedbackUrl?`<a href="${A.esc(window.SS_CONFIG.feedbackUrl)}" target="_blank" rel="noopener" style="color:var(--muted)">Send feedback</a>`:""}${window.SS_CONFIG.contactEmail?`<span>Contact: <span style="user-select:all">${A.esc(window.SS_CONFIG.contactEmail)}</span></span>`:""}<span>Free beta ${A.esc(window.SS_CONFIG.version||"")}</span></footer>`:""}`;
+  app.querySelectorAll("[data-team]").forEach(b=>b.addEventListener("click",()=>{A.me.team=b.dataset.team;store.set("team",A.me.team);renderHome()}));
+  app.querySelectorAll("[data-f]").forEach(b=>b.addEventListener("click",()=>{filter=b.dataset.f;store.set("filter",filter);renderHome()}));
+  app.querySelectorAll("[data-g]").forEach(b=>b.addEventListener("click",()=>{location.hash=b.dataset.g}));
+  app.querySelector("#tf").addEventListener("click",()=>{location.hash="test-finder"});
+  const qi=app.querySelector("#q");qi.addEventListener("input",()=>{query=qi.value;const pos=qi.selectionStart;renderHome();const n=app.querySelector("#q");n.focus();n.setSelectionRange(pos,pos)});
+  const nr=app.querySelector("#newround");
+  if(nr){let armed=false;nr.addEventListener("click",async()=>{if(!armed){armed=true;nr.textContent="Tap again to confirm";nr.classList.add("warn");return}
+    try{await A.pool.db.doc("settings/round").set({round:"r"+Date.now(),startedAt:Date.now()});A.toast("New round started")}catch(e){A.toast("Couldn't start a new round. Check you have edit access.")}})}
+}
+function renderTests(){
+  view="tests";
+  let tq="";
+  const paint=()=>{const q=tq.toLowerCase();const rows=A.TESTS.filter(r=>!q||r.join(" ").toLowerCase().includes(q));
+    app.querySelector("#tb").innerHTML=rows.map(r=>`<tr><td>${r[1]}</td><td>${r[2]}</td><td>${r[0]}</td><td>${r[3]}</td></tr>`).join("")||`<tr><td colspan="4">No tests match.</td></tr>`};
+  app.innerHTML=`<div class="topbar"><button class="back" id="back">← Games</button><span class="eyebrow">Test finder</span></div>
+  <section class="card"><h2>Test finder</h2><p class="lead">Search by test, topic or unit name. Probability and Random Variables has no formal tests; it supplies the distributions the tests rely on.</p>
+  <input type="search" id="tq" placeholder="e.g. Basic Applied Statistics, nonparametric, proportion" aria-label="Search tests">
+  <div class="scroll"><table class="t"><thead><tr><th>Test</th><th>Use when</th><th>Topic</th><th>Units</th></tr></thead><tbody id="tb"></tbody></table></div></section>`;
+  app.querySelector("#back").addEventListener("click",()=>{location.hash="home"});
+  const i=app.querySelector("#tq");i.addEventListener("input",()=>{tq=i.value;paint()});paint();
+}
+function renderGame(g){
+  view="game";
+  app.innerHTML=`<div class="topbar"><button class="back" id="back">← Games</button><span class="eyebrow">${g.mode}</span></div>
+  <header style="display:flex;flex-direction:column;gap:8px"><h1 style="font-size:1.9rem">${A.esc(g.title)}</h1><div class="row">${unitTags(g)}</div><p class="lead">${A.esc(g.how)}</p></header>
+  ${!A.me.team?`<p class="lead" style="font-size:.85rem">Tip: pick a team on the home screen so your points count for your team.</p>`:""}
+  <div id="stage" style="display:flex;flex-direction:column;gap:16px"></div>`;
+  app.querySelector("#back").addEventListener("click",()=>{location.hash="home"});
+  try{cleanup=g.mount(app.querySelector("#stage"))||null}catch(e){app.querySelector("#stage").innerHTML=`<p class="lead">This game hit a problem loading. Go back and try again.</p>`;console.error(e)}
+}
+function route(){
+  if(cleanup){try{cleanup()}catch(e){}cleanup=null}
+  const h=location.hash.replace("#","");
+  const g=A.games.find(x=>x.id===h);
+  if(g)renderGame(g);else if(h==="test-finder")renderTests();else renderHome();
+  window.scrollTo(0,0);
+}
+A.onPool(()=>{if(view==="home")renderHome()});
+A.start = () => {window.addEventListener("hashchange",route);route();connect()};
+})();
+/* ================= Games 1: intro + probability ================= */
+(function(){
+const A=APP,S=A.S,C=A.C,f=S.fmt;
+
+/* ---------- Bias Detective ---------- */
+const BIAS=["Voluntary response bias","Undercoverage","Non-response bias","Convenience sampling","Confounding","No serious bias"];
+const CASES=[
+ {s:"The student union posts an online poll: “Should parking fees rise?” 2,300 students respond, and 81% say no.",d:0,b:0,fixes:["Survey a random sample drawn from the full enrolment list","Leave the poll open longer to get more responses","Advertise the poll on more social media pages"],why:"People with strong feelings choose to respond, so the 81% overstates opposition. A larger self-selected sample is still biased."},
+ {s:"To estimate how often students exercise, a researcher interviews 150 people at the campus gym one Tuesday.",d:0,b:3,fixes:["Randomly select students from the enrolment list and contact them","Interview twice as many people at the gym","Repeat the gym interviews on a Saturday"],why:"Gym users exercise more than typical students, so the sample is easy to reach but not representative."},
+ {s:"200 volunteers are randomly assigned to drink coffee or decaf, then complete a reaction-time test. The coffee group reacts faster on average.",d:1,b:5,fixes:["Keep the design and limit conclusions to people similar to the volunteers","Let volunteers choose which drink they want","Drop the decaf group to save time"],why:"Random assignment balances other factors, so the comparison is fair. Volunteers may not represent everyone, which limits generalising, not the causal comparison."},
+ {s:"A market researcher phones 1,000 randomly chosen landline numbers to estimate how many young adults use streaming apps.",d:0,b:1,fixes:["Use a sampling frame that includes mobile numbers and online panels","Call 3,000 landlines instead","Only call in the evening when people are home"],why:"Many young adults have no landline, so they cannot be selected. That group is left out of the sampling frame."},
+ {s:"A random sample of 1,000 alumni is mailed a salary survey. Only 120 reply.",d:0,b:2,fixes:["Follow up non-responders and offer a small incentive","Report the 120 replies as the alumni average","Mail the survey to 1,000 different alumni"],why:"With 88% not replying, the people who answered may differ from those who didn't, for example higher earners being happier to share."},
+ {s:"Students who chose to attend tutorials scored 9 marks higher on the exam than those who didn't. The report concludes that tutorials cause higher marks.",d:0,b:4,fixes:["Run a randomised trial, or compare students with similar prior marks","Survey students about whether tutorials helped","Repeat the comparison next semester"],why:"Motivated students both attend more and study more. Motivation is a confounder, so attendance alone can't be credited."}
+];
+A.reg({id:"bias-detective",title:"Bias Detective",star:true,mode:"In class",units:[["intro",[2,3]],["bas",[1]]],topics:"sampling bias study design observational experiment survey",
+ blurb:"Spot the study design and the bias, then choose the best fix.",
+ how:"Read each case with your team. Decide what kind of study it is, name the bias, and pick the fix that would really help.",
+ mount(el){const order=S.shuffle(CASES);A.quiz(el,{id:"bias-detective",n:order.length,gen:i=>{const c=order[i];
+   const wrongB=S.shuffle(BIAS.filter((_,k)=>k!==c.b)).slice(0,3);const bq=A.mc([BIAS[c.b],...wrongB],0);const fq=A.mc(c.fixes,0);
+   return {role:["Analyst","Sceptic","Reporter"][i%3],html:`<p class="eyebrow">Case ${i+1}</p><p>${c.s}</p>`,steps:[
+    {html:"<p><strong>What kind of study is this?</strong></p>",choices:["Observational study or survey","Randomised experiment"],answer:c.d,explain:c.d?"The researchers assigned the treatment at random.":"Nobody was assigned a treatment; data were collected as they were."},
+    {html:"<p><strong>What is the main problem?</strong></p>",choices:bq.choices,answer:bq.answer,explain:c.why},
+    {html:"<p><strong>Which fix helps most?</strong></p>",choices:fq.choices,answer:fq.answer,explain:"Fixing how the sample is chosen matters more than making it bigger."}]}}})}});
+
+/* ---------- Outlier Effect ---------- */
+A.reg({id:"outlier-effect",title:"Outlier Effect",mode:"After class",units:[["intro",[4]],["bas",[1]]],topics:"mean median standard deviation IQR outlier robust skew",
+ blurb:"Move one data point and predict how mean, median and spread react.",
+ how:"Nine students' commute times are on the line. Predict first, then drag the slider to move the highlighted student and check.",
+ mount(el){
+  const base=[12,15,18,20,22,25,27,30],q1=a=>{const b=a.slice().sort((x,y)=>x-y);return S.median(b.slice(0,Math.floor(b.length/2)))},q3=a=>{const b=a.slice().sort((x,y)=>x-y);return S.median(b.slice(Math.ceil(b.length/2)))};
+  const R=[
+   {q:"The highlighted commute moves from 32 to 110 minutes. Which changes more?",c:["The mean","The median","Both change by the same amount"],a:0,e:"The mean uses every value, so one extreme value drags it up. The median only cares about the middle value."},
+   {q:"With the 110-minute commute, which measure of spread hardly changes?",c:["Standard deviation","Interquartile range (IQR)","Range"],a:1,e:"The IQR uses the middle 50% of the data, so it ignores the extreme value. SD and range both jump."},
+   {q:"Move the slider until the mean is about 30 minutes (within 0.5). Then press Check.",target:30},
+   {q:"For right-skewed data like commute times, which is usually true?",c:["Mean is greater than median","Median is greater than mean","They are always equal"],a:0,e:"The long right tail pulls the mean towards it, so mean > median. That's why medians are reported for incomes and house prices."}
+  ];
+  A.rounds(el,{id:"outlier-effect",n:R.length,max:10,render(body,api){
+   const r=R[api.round];let v=r.target?32:32;
+   body.innerHTML=`<p class="stem">${r.q}</p><div class="plot"></div><input type="range" id="sl" min="0" max="120" step="1" value="${v}" aria-label="Highlighted commute in minutes"><div class="stats" id="st"></div><div id="ask"></div>`;
+   const paint=()=>{const data=base.concat([v]);const sx=C.scale(0,120,20,C.W-12);
+    let s="";const stack={};base.forEach(x=>{const k=Math.round(x/3);stack[k]=(stack[k]||0)+1;s+=`<circle cx="${sx(x)}" cy="${80-stack[k]*12}" r="5" fill="var(--pop)"/>`});
+    s+=`<circle cx="${sx(v)}" cy="68" r="7" fill="var(--curve)"/>`;
+    const m=S.mean(data),md=S.median(data);
+    s+=`<line x1="${sx(m)}" x2="${sx(m)}" y1="20" y2="86" stroke="var(--mean)" stroke-width="2"/><text class="axis" x="${sx(m)}" y="16" text-anchor="middle" style="fill:var(--mean)">mean</text>`;
+    s+=`<line x1="${sx(md)}" x2="${sx(md)}" y1="30" y2="86" stroke="var(--ink)" stroke-dasharray="3 3"/><text class="axis" x="${sx(md)}" y="28" text-anchor="middle" style="fill:var(--ink)">median</text>`;
+    s+=C.xaxis(sx,86,0,120,20,x=>x,"minutes");
+    body.querySelector(".plot").innerHTML=C.svg(120,s,"Dot plot of nine commute times");
+    body.querySelector("#st").innerHTML=`<div class="stat"><b>${f(m,1)}</b><span>mean</span></div><div class="stat"><b>${f(md,1)}</b><span>median</span></div><div class="stat"><b>${f(S.sd(data),1)}</b><span>SD</span></div><div class="stat"><b>${f(q3(data)-q1(data),1)}</b><span>IQR</span></div><div class="stat"><b>${Math.max(...data)-Math.min(...data)}</b><span>range</span></div>`};
+   paint();body.querySelector("#sl").addEventListener("input",e=>{v=+e.target.value;paint()});
+   const ask=body.querySelector("#ask");
+   if(r.target){ask.innerHTML=`<button class="btn" id="chk">Check</button>`;ask.querySelector("#chk").addEventListener("click",()=>{const m=S.mean(base.concat([v]));const ok=Math.abs(m-r.target)<=0.5;const need=9*r.target-base.reduce((a,b)=>a+b,0);api.add(ok?10:Math.max(0,10-Math.abs(m-r.target)*4));
+     ask.innerHTML=`<div class="feedback ${ok?"":"no"}"><p>${ok?"Spot on.":"Close."} The mean is 30 when the highlighted commute is ${need} minutes, because the nine values must add to 9 × 30 = 270.</p></div><button class="btn" id="nx" style="margin-top:10px">Next</button>`;ask.querySelector("#nx").addEventListener("click",api.next)});return}
+   const mc=A.mc(r.c,r.a);ask.innerHTML=`<div class="choices">${mc.choices.map((c,k)=>`<button class="choice" data-k="${k}">${c}</button>`).join("")}</div>`;
+   ask.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>{const ok=+b.dataset.k===mc.answer;if(ok)api.add(10);
+     ask.querySelectorAll(".choice").forEach((x,j)=>{x.disabled=true;if(j===mc.answer)x.classList.add("right");else if(x===b)x.classList.add("wrong")});
+     if(api.round<2){v=110;body.querySelector("#sl").value=110;paint()}
+     ask.insertAdjacentHTML("beforeend",`<div class="feedback ${ok?"":"no"}" style="margin-top:10px"><p>${r.e} Try the slider to see it.</p></div><button class="btn" id="nx" style="margin-top:10px">Next</button>`);ask.querySelector("#nx").addEventListener("click",api.next)}));
+  }});
+ }});
+
+/* ---------- Z-Score Race ---------- */
+const EVENTS=[{n:"100 m sprint",u:"s",m:12.8,s:0.6,low:true,d:2},{n:"Long jump",u:"m",m:5.6,s:0.45,low:false,d:2},{n:"Javelin",u:"m",m:45,s:6,low:false,d:1},{n:"1500 m",u:"s",m:290,s:18,low:true,d:0},{n:"High jump",u:"m",m:1.7,s:0.09,low:false,d:2},{n:"Shot put",u:"m",m:12.5,s:1.6,low:false,d:2}];
+const NAMES=["Aroha","Mei","Priya","Tomás","Kofi","Lena","Jarrah","Sami","Noor","Ivan","Zara","Ben"];
+A.reg({id:"z-score-race",title:"Z-Score Race",mode:"In class",units:[["intro",[5]],["prob",[5]],["bas",[2]]],topics:"z-score standardise normal distribution percentile compare",
+ blurb:"Compare athletes from different events to crown the true champion.",
+ how:"Each round, two athletes from different events. Use each event's mean and SD to find who is more exceptional. In class, split the events across your team like a relay.",
+ mount(el){A.quiz(el,{id:"z-score-race",n:5,gen:i=>{
+   const [e1,e2]=S.shuffle(EVENTS).slice(0,2),[n1,n2]=S.shuffle(NAMES).slice(0,2);
+   let z1=S.unif(0.6,2.4),z2=S.unif(0.6,2.4);while(Math.abs(z1-z2)<0.35)z2=S.unif(0.6,2.4);
+   const val=(e,z)=>+(e.m+(e.low?-1:1)*z*e.s).toFixed(e.d);const v1=val(e1,z1),v2=val(e2,z2);
+   const zz=(e,v)=>(e.low?-1:1)*(v-e.m)/e.s;const Z1=zz(e1,v1),Z2=zz(e2,v2);const win=Z1>Z2?0:1;
+   const pc=z=>Math.round(S.ncdf(z)*100);
+   return {role:["Runner 1","Runner 2","Anchor"][i%3],html:`<table class="t"><thead><tr><th>Athlete</th><th>Event</th><th>Result</th><th>Field mean</th><th>Field SD</th></tr></thead><tbody><tr><td>${n1}</td><td>${e1.n}</td><td class="num">${v1} ${e1.u}</td><td class="num">${e1.m} ${e1.u}</td><td class="num">${e1.s}</td></tr><tr><td>${n2}</td><td>${e2.n}</td><td class="num">${v2} ${e2.u}</td><td class="num">${e2.m} ${e2.u}</td><td class="num">${e2.s}</td></tr></tbody></table><p style="margin-top:8px"><strong>Who performed more exceptionally?</strong>${e1.low||e2.low?" Remember: lower is better for running times.":""}</p>`,
+     choices:[n1,n2,"They are equally exceptional"],answer:win,
+     explain:`${n1}: z = ${f(Z1)} (better than about ${pc(Z1)}% of the field). ${n2}: z = ${f(Z2)} (about ${pc(Z2)}%). The larger z wins. For timed events we flip the sign because faster is better.`}}})}});
+
+/* ---------- Correlation Sniper ---------- */
+const CTX=[{x:"Hours studied",y:"Exam mark",sign:1,cause:1,e:"Plausible, but students who study more may also attend more and sleep better. Observational data alone can't prove it."},
+ {x:"Shoe size",y:"Reading score (ages 5–12)",sign:1,cause:1,e:"Age is the lurking variable: older children have bigger feet and read better."},
+ {x:"Ice cream sales",y:"Sunburn cases",sign:1,cause:1,e:"Hot, sunny weather drives both."},
+ {x:"Screen time before bed",y:"Hours of sleep",sign:-1,cause:1,e:"It may play a part, but stress or late study could drive both. Correlation alone doesn't settle it."},
+ {x:"Fertiliser dose (randomly assigned to plots)",y:"Crop yield",sign:1,cause:2,e:"Plots were randomly assigned, so other factors are balanced. A randomised experiment supports a causal claim."},
+ {x:"Number of firefighters at a fire",y:"Damage cost",sign:1,cause:1,e:"Bigger fires bring more firefighters and cause more damage. Fire size is the lurking variable."}];
+A.reg({id:"correlation-sniper",title:"Correlation Sniper",mode:"Both",units:[["intro",[6]],["reg",[1]]],topics:"correlation r scatterplot causation lurking variable",
+ blurb:"Guess r from a scatterplot, then judge whether the link is causal.",
+ how:"Slide to your best guess of the correlation r and fire. The closer you are, the more points. Then decide whether the relationship shows cause and effect.",
+ mount(el){const order=S.shuffle(CTX);
+  A.rounds(el,{id:"correlation-sniper",n:6,max:15,render(body,api){
+   const ctx=order[api.round],target=ctx.sign*S.unif(0.25,0.95),n=40,xs=[],ys=[];
+   for(let i=0;i<n;i++){const x=S.norm(),e=S.norm();xs.push(x);ys.push(target*x+Math.sqrt(1-target*target)*e)}
+   const r=S.cor(xs,ys);let g=0;
+   const sx=C.scale(Math.min(...xs)-0.3,Math.max(...xs)+0.3,24,C.W-10),sy=C.scale(Math.min(...ys)-0.3,Math.max(...ys)+0.3,190,12);
+   body.innerHTML=`<p class="stem"><strong>${ctx.x}</strong> vs <strong>${ctx.y}</strong></p>`+C.svg(220,xs.map((x,i)=>`<circle cx="${sx(x)}" cy="${sy(ys[i])}" r="4" fill="var(--mean)" opacity=".75"/>`).join("")+`<line x1="24" x2="${C.W-10}" y1="196" y2="196" stroke="var(--line)"/><text class="axis" x="${C.W-10}" y="210" text-anchor="end">${A.esc(ctx.x)}</text><line x1="24" x2="24" y1="12" y2="196" stroke="var(--line)"/><text class="axis" x="28" y="10">${A.esc(ctx.y)}</text>`,"Scatterplot")+
+     `<div class="row between"><span class="lead">Your guess</span><span class="big" id="gv" style="font-size:1.8rem">0.00</span></div><input type="range" id="g" min="-1" max="1" step="0.01" value="0" aria-label="Guess r"><button class="btn" id="fire">Fire</button><div id="out"></div>`;
+   body.querySelector("#g").addEventListener("input",e=>{g=+e.target.value;body.querySelector("#gv").textContent=f(g)});
+   body.querySelector("#fire").addEventListener("click",e=>{e.target.disabled=true;body.querySelector("#g").disabled=true;
+    const err=Math.abs(g-r),p=Math.max(0,Math.round(10-err*25));api.add(p);
+    const out=body.querySelector("#out");
+    const ch=["Yes, a strong correlation proves it","No, a lurking variable or other cause could explain it","Yes, because it comes from a randomised experiment"];
+    const ans=ctx.cause===2?2:1;
+    out.innerHTML=`<div class="feedback ${err<0.15?"":"no"}"><p>The true r is <strong class="num">${f(r)}</strong>. You were off by ${f(err)}: +${p} points.</p></div><p style="margin-top:10px"><strong>Does ${A.esc(ctx.x.toLowerCase())} cause the change in ${A.esc(ctx.y.toLowerCase())}?</strong></p><div class="choices">${ch.map((c,k)=>`<button class="choice" data-k="${k}">${c}</button>`).join("")}</div>`;
+    out.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>{const ok=+b.dataset.k===ans;if(ok)api.add(5);out.querySelectorAll(".choice").forEach((x,j)=>{x.disabled=true;if(j===ans)x.classList.add("right");else if(x===b)x.classList.add("wrong")});
+     out.insertAdjacentHTML("beforeend",`<div class="feedback ${ok?"":"no"}" style="margin-top:10px"><p>${ctx.e}</p></div><button class="btn" id="nx" style="margin-top:10px">Next</button>`);out.querySelector("#nx").addEventListener("click",api.next)}));
+   });
+  }})}});
+
+/* ---------- Fair or Rigged? ---------- */
+A.reg({id:"fair-or-rigged",title:"Fair or Rigged?",mode:"Both",units:[["prob",[1,6]],["inf",[6]]],topics:"simulation law of large numbers chi-square goodness of fit dice randomness evidence",
+ blurb:"Roll a suspicious die as often as you like, then rule it fair or rigged.",
+ how:"Some dice are fair; others land on one face too often. Roll in batches and watch the proportions settle. Decide when you have enough evidence. Small samples can fool you.",
+ mount(el){A.rounds(el,{id:"fair-or-rigged",n:5,max:10,render(body,api){
+   const rigged=S.r()<0.5,face=S.int(0,5),p=[0,1,2,3,4,5].map(k=>rigged?(k===face?0.3:0.14):1/6);
+   const counts=[0,0,0,0,0,0];
+   const roll=k=>{for(let i=0;i<k;i++){let u=S.r(),j=0;while(j<5&&u>p[j]){u-=p[j];j++}counts[j]++}paint()};
+   body.innerHTML=`<p class="stem">Die #${api.round+1}. Roll it, then give your verdict.</p><div class="ch"></div><div class="stats" id="st"></div><div class="row"><button class="btn ghost" data-r="10">Roll 10</button><button class="btn ghost" data-r="50">Roll 50</button><button class="btn ghost" data-r="200">Roll 200</button></div><div class="row"><button class="btn" id="fair">It's fair</button><button class="btn warn" id="rig">It's rigged</button></div><div id="out"></div>`;
+   const paint=()=>{const n=counts.reduce((a,b)=>a+b,0);const props=counts.map(c=>n?c/n:0);
+     body.querySelector(".ch").innerHTML=C.bars(["1","2","3","4","5","6"],props,{max:0.45,pct:true,ref:1/6,label:"Proportion of rolls per face"});
+     let chi=0;counts.forEach(c=>{const e=n/6;if(e)chi+=(c-e)**2/e});
+     body.querySelector("#st").innerHTML=`<div class="stat"><b>${n}</b><span>rolls</span></div><div class="stat"><b>${n?f(chi):"—"}</b><span>chi-square statistic</span></div><div class="stat"><b>${n>=30?S.pfmt(S.chip(chi,5)):"roll 30+"}</b><span>p-value (fair die)</span></div>`};
+   paint();
+   body.querySelectorAll("[data-r]").forEach(b=>b.addEventListener("click",()=>roll(+b.dataset.r)));
+   const verdict=v=>{const n=counts.reduce((a,b)=>a+b,0);if(!n){A.toast("Roll at least once before deciding.");return}
+     body.querySelectorAll("button").forEach(b=>b.disabled=true);const ok=v===rigged;if(ok)api.add(10);
+     const out=body.querySelector("#out");out.innerHTML=`<div class="feedback ${ok?"":"no"}"><p>This die was <strong>${rigged?`rigged: face ${face+1} came up 30% of the time`:"fair"}</strong>. ${n<50?"With so few rolls, chance variation is large, so be careful about strong conclusions.":"The red line is 1/6, what a fair die gives in the long run."}</p></div><button class="btn" id="nx" style="margin-top:10px">Next die</button>`;out.querySelector("#nx").addEventListener("click",api.next)};
+   body.querySelector("#fair").addEventListener("click",()=>verdict(false));body.querySelector("#rig").addEventListener("click",()=>verdict(true));
+ }})}});
+
+/* ---------- Diagnosis Dilemma ---------- */
+A.reg({id:"diagnosis-dilemma",title:"Diagnosis Dilemma",mode:"In class",units:[["prob",[2,3]]],topics:"conditional probability Bayes theorem sensitivity specificity false positive",
+ blurb:"Act as the clinic team: what does a positive test really mean?",
+ how:"Each patient tests positive. Use the disease rate and the test's accuracy to find the chance they really have the disease. Agree as a team before you answer.",
+ mount(el){A.quiz(el,{id:"diagnosis-dilemma",n:5,gen:i=>{
+   const prev=S.pick([0.005,0.01,0.02,0.05,0.1,0.2]),sens=S.pick([0.9,0.95,0.98,0.99]),spec=S.pick([0.9,0.95,0.97,0.99]);
+   const N=10000,D=Math.round(N*prev),TP=Math.round(D*sens),FP=Math.round((N-D)*(1-spec)),ppv=TP/(TP+FP);
+   const pct=x=>Math.round(x*100)+"%";
+   let opts=[pct(ppv),pct(sens),pct(spec*prev+0.5),pct(1-spec)];opts=[...new Set(opts)];while(opts.length<4)opts.push(pct(Math.min(0.99,ppv+0.15*opts.length)));
+   const mc=A.mc(opts,0);
+   return {role:["Doctor","Lab scientist","Patient advocate"][i%3],html:`<p><strong>Patient ${i+1}</strong> tests positive.</p><ul style="margin:6px 0 0;padding-left:18px"><li>${(prev*100).toFixed(1).replace(".0","")}% of people like this patient have the disease</li><li>Sensitivity: the test is positive for ${pct(sens)} of people with the disease</li><li>Specificity: it is negative for ${pct(spec)} of people without it</li></ul><p style="margin-top:8px"><strong>What is the chance this patient has the disease?</strong></p>`,
+    choices:mc.choices,answer:mc.answer,explain:`Imagine ${N.toLocaleString()} people: ${D} have the disease and ${TP} of them test positive. Of the ${(N-D).toLocaleString()} without it, ${FP} also test positive. So P(disease | positive) = ${TP} / (${TP} + ${FP}) ≈ ${pct(ppv)}. When the disease is rare, false positives can outnumber true ones.`}}})}});
+
+/* ---------- Risky Business ---------- */
+A.reg({id:"risky-business",title:"Risky Business",mode:"After class",units:[["prob",[4]]],topics:"expected value variance risk decision insurance lottery",
+ blurb:"Insurance, raffles and investments: decide with expected value and risk.",
+ how:"Work out the expected value (and, where asked, the risk) of each option before choosing. Track your team's portfolio across the five decisions.",
+ mount(el){const gens=[
+  ()=>{const prem=S.pick([6,8,10,12]),p=S.pick([0.01,0.02,0.03,0.05]),cost=S.pick([300,400,600]);const ev=p*cost;
+    return {html:`<p>Phone insurance costs <strong>$${prem}/month</strong>. Each month there's a <strong>${p*100}%</strong> chance of a <strong>$${cost}</strong> repair.</p><p style="margin-top:6px"><strong>On average, which costs you less per month?</strong></p>`,choices:["Buying the insurance","Paying for repairs yourself","They cost about the same"],answer:Math.abs(ev-prem)<0.75?2:ev<prem?1:0,explain:`Expected repair cost = ${p} × $${cost} = $${f(ev)} per month, vs a $${prem} premium. Insurers usually charge more than the expected cost; you pay to remove risk.`}},
+  ()=>{const tix=S.pick([2,5,10]),odds=S.pick([200,500,1000]),prize=S.pick([500,1000,2000]);const ev=prize/odds-tix;
+    return {html:`<p>A raffle ticket costs <strong>$${tix}</strong>. There's a 1 in <strong>${odds}</strong> chance of winning <strong>$${prize}</strong>.</p><p style="margin-top:6px"><strong>What is the expected value of buying one ticket?</strong></p>`,...A.mc([`$${f(ev)}`,`$${f(prize/odds)}`,`$${f(-tix)}`,`$${f(prize-tix)}`],0),explain:`EV = $${prize} × 1/${odds} − $${tix} = $${f(ev)}. ${ev<0?"On average you lose money; the raffle raises funds that way.":"Rare, but this raffle favours buyers."}`}},
+  ()=>{const sure=S.pick([400,500,600]),big=S.pick([1000,1200,1500]);const ev=big/2;
+    return {html:`<p>Game show: take <strong>$${sure}</strong> now, or flip a coin for <strong>$${big}</strong> or nothing.</p><p style="margin-top:6px"><strong>Which option has the higher expected value?</strong></p>`,choices:["Take the sure money","Flip the coin","They're equal"],answer:ev>sure?1:ev<sure?0:2,explain:`The coin flip's EV is 0.5 × $${big} = $${ev}, vs $${sure} for sure. Even when the gamble has a higher EV, many people take the sure thing because it has no risk (variance 0).`}},
+  ()=>{const m=S.pick([5,6,8]),a=S.pick([2,3]),b=S.pick([8,10,12]);
+    return {html:`<p>Two investments both return <strong>${m}%</strong> per year on average. Fund A's returns have SD <strong>${a}%</strong>; Fund B's have SD <strong>${b}%</strong>.</p><p style="margin-top:6px"><strong>Which is riskier?</strong></p>`,choices:["Fund A","Fund B","Same risk, same mean"],answer:1,explain:`Same expected return, but Fund B's larger SD means outcomes vary more, including bigger losses. Variance measures risk.`}},
+  ()=>{const w=S.pick([10,20]),c=S.pick([2,3]);const ev=(1/6)*w-c;
+    return {html:`<p>A stall charges <strong>$${c}</strong> to roll a fair die. Roll a six and win <strong>$${w}</strong>.</p><p style="margin-top:6px"><strong>Over 600 plays, how much does the stall expect to gain?</strong></p>`,...A.mc([`$${f(-ev*600,0)}`,`$${f(ev*600,0)}`,`$${600*c}`,`$0`],0),explain:`Player EV per play = $${w}/6 − $${c} = $${f(ev)}. The stall gains the opposite: $${f(-ev)} × 600 = $${f(-ev*600,0)}.`}}];
+  const order=S.shuffle(gens);A.quiz(el,{id:"risky-business",n:5,gen:i=>({role:["Analyst","Sceptic","Reporter"][i%3],...order[i]()})})}});
+
+/* ---------- Distribution Match ---------- */
+const DM=[
+ {s:"A quiz has 10 multiple-choice questions with 4 options each. You guess every one. X = number correct.",d:0,q:"P(X = 3)",v:S.binom(10,3,0.25),w:[S.binom(10,3,0.5),0.3,S.pois(2.5,3)]},
+ {s:"Emails arrive at an average rate of 4 per hour, independently. X = emails in the next hour.",d:1,q:"P(X = 2)",v:S.pois(4,2),w:[S.binom(4,2,0.5),0.5,S.pois(2,2)]},
+ {s:"Adult heights are bell-shaped with mean 170 cm and SD 8 cm. X = a random adult's height.",d:2,q:"P(X > 186)",v:1-S.ncdf(2),w:[0.16,0.05,1-S.ncdf(1)]},
+ {s:"A basketballer makes 70% of free throws and takes 8 shots. X = shots made.",d:0,q:"P(X = 8)",v:S.binom(8,8,0.7),w:[0.7,S.binom(8,7,0.7),0.5]},
+ {s:"A call centre receives 2.5 complaints per day on average. X = complaints tomorrow.",d:1,q:"P(X = 0)",v:S.pois(2.5,0),w:[0,0.25,S.pois(2.5,1)]},
+ {s:"Exam marks are roughly normal with mean 65 and SD 10. X = a random student's mark.",d:2,q:"P(X < 50)",v:S.ncdf(-1.5),w:[0.15,S.ncdf(-1),0.5]},
+ {s:"5% of items from a machine are defective. An inspector checks 20 items. X = defective items found.",d:0,q:"P(X = 0)",v:S.binom(20,0,0.05),w:[0.05,0.95,S.binom(20,1,0.05)]},
+ {s:"A typist makes 1.2 typos per page on average. X = typos on the next page.",d:1,q:"P(X ≥ 1)",v:1-S.pois(1.2,0),w:[S.pois(1.2,1),0.5,S.pois(1.2,0)]}
+];
+A.reg({id:"distribution-match",title:"Distribution Match",mode:"After class",units:[["prob",[5]],["bas",[2]]],topics:"binomial poisson normal distribution probability model",
+ blurb:"Match real situations to binomial, Poisson or normal, then find a probability.",
+ how:"Read the situation, pick the model that fits, then compute the probability. Fixed number of yes/no trials suggests binomial; counts over time suggest Poisson; measurements suggest normal.",
+ mount(el){const order=S.shuffle(DM);A.quiz(el,{id:"distribution-match",n:order.length,gen:i=>{const c=order[i];const opts=[c.v,...c.w].map(x=>f(x,3));const uniq=[...new Set(opts)];while(uniq.length<4)uniq.push(f(Math.min(0.999,c.v+0.07*uniq.length),3));const mc=A.mc(uniq,0);
+  return {html:`<p>${c.s}</p>`,steps:[
+   {html:"<p><strong>Which model fits X?</strong></p>",choices:["Binomial","Poisson","Normal"],answer:c.d,explain:["Fixed number of independent trials, each a success or failure with the same chance.","A count of events happening at a steady average rate.","A continuous measurement with a bell-shaped spread."][c.d]},
+   {html:`<p><strong>${c.q} = ?</strong></p>`,choices:mc.choices,answer:mc.answer,explain:`The answer is ${f(c.v,3)}. ${["Use C(n,k) pᵏ(1−p)ⁿ⁻ᵏ.","Use e^(−λ) λᵏ / k!.","Convert to z = (x − μ)/σ and use the normal table."][c.d]}`}]}}})}});
+})();
+/* ================= Games 2: inference + basic applied ================= */
+(function(){
+const A=APP,S=A.S,C=A.C,f=S.fmt;
+
+/* ---------- Sample Machine (class pool) ---------- */
+const rng=S.mulberry(20261111),POP=[];
+for(let i=0;i<2000;i++){const long=rng()<0.18;const v=long?6+(-Math.log(1-rng()))*6.5:1.2+(-Math.log(1-rng()))*3.2;POP.push(Math.round(Math.min(v,40)*10)/10)}
+const MU=S.mean(POP),SIG=Math.sqrt(POP.reduce((a,b)=>a+(b-MU)**2,0)/POP.length),XM=25;
+A.reg({id:"sample-machine",title:"Sample Machine",star:true,mode:"In class",units:[["inf",[1]],["bas",[3]]],topics:"central limit theorem sampling distribution sample mean standard error",
+ blurb:"Every student's sample mean builds a live class picture of the CLT.",
+ how:"Draw a random sample of café wait times. Your sample mean joins the class picture. As the class adds means, watch the shape change from skewed to bell-shaped.",
+ mount(el){
+  let draws=0,n=A.store.get("sm.n",15),last=null,pool=[],mine=[],sim=[],unsub=null,curve=true,pred=A.store.get("sm.pred",null);
+  el.innerHTML=`<section class="card"><h2>1 · The population: 2,000 café wait times</h2><p class="lead">Skewed right: most waits are short, a few are long. True mean μ = ${f(MU,1)} min, SD σ = ${f(SIG,1)} min.</p><div id="pop"></div></section>
+  <section class="card"><h2>2 · Predict first</h2><p>If the class plots everyone's sample <strong>means</strong>, what shape will they make?</p><div class="row" id="pred"></div></section>
+  <section class="card"><h2>3 · Draw your sample</h2><div class="row"><span class="eyebrow">Sample size</span><div class="seg" id="ns"></div></div><div class="row between"><button class="btn" id="draw">Draw</button><div style="text-align:right"><div class="eyebrow">Your x̄</div><div class="big" id="xb">—</div></div></div></section>
+  <section class="card"><h2>4 · The class picture</h2><div id="cls"></div><div class="legend"><span><i style="background:var(--mean)"></i>Sample means</span><span><i style="background:var(--curve)"></i>CLT: normal, centre μ, spread σ/√n</span></div><div class="stats" id="st"></div><div id="rev"></div><div class="row"><button class="btn ghost" id="sim">Add 50 simulated classmates</button><button class="btn ghost" id="cv">Hide CLT curve</button></div></section>`;
+  const sx=v=>26+(Math.min(v,XM)/XM)*(C.W-36);
+  const ax=y=>C.xaxis(sx,y,0,XM,5,t=>t===XM?"25+":t,"minutes");
+  const PRED=[["skew","Skewed like the wait times"],["bell","Bell-shaped around μ"],["flat","Flat and spread out"]];
+  const paintTop=()=>{
+   el.querySelector("#pred").innerHTML=PRED.map(([k,l])=>`<button class="chip" data-p="${k}" aria-pressed="${pred===k}">${l}</button>`).join("");
+   el.querySelector("#ns").innerHTML=[5,15,30].map(k=>`<button data-n="${k}" aria-pressed="${n===k}">n = ${k}</button>`).join("");
+   const bins=new Array(XM).fill(0);POP.forEach(v=>bins[Math.min(Math.floor(v),XM-1)]++);const mx=Math.max(...bins),bw=(C.W-36)/XM;
+   let s=bins.map((c,i)=>`<rect x="${sx(i)+0.5}" y="${130-c/mx*118}" width="${bw-1}" height="${c/mx*118}" fill="var(--pop)" opacity=".85"/>`).join("");
+   s+=`<line x1="${sx(MU)}" x2="${sx(MU)}" y1="8" y2="130" stroke="var(--ink)" stroke-dasharray="3 3"/><text class="axis" x="${sx(MU)+4}" y="16" style="fill:var(--ink)">μ</text>`;
+   if(last){last.vals.forEach((v,i)=>{s+=`<circle class="drop" style="animation-delay:${i*25}ms" cx="${sx(v)}" cy="${150+((i*37)%13)-6}" r="3" fill="var(--mean)" opacity=".75"/>`});s+=`<line class="drop" style="animation-delay:${last.vals.length*25+120}ms" x1="${sx(last.m)}" x2="${sx(last.m)}" y1="138" y2="168" stroke="var(--mean)" stroke-width="3"/>`}
+   else s+=`<text class="axis" x="${C.W/2}" y="156" text-anchor="middle">Your sample will drop in here</text>`;
+   el.querySelector("#pop").innerHTML=C.svg(210,s+ax(176),"Population of café wait times")};
+  const all=()=>(A.pool.db?pool:mine).concat(sim);
+  const paintClass=()=>{
+   const ms=all().filter(m=>m.n===n).map(m=>m.mean),k=ms.length,bw=0.5,nb=XM/bw,bins=new Array(nb).fill(0);ms.forEach(v=>bins[Math.min(Math.floor(v/bw),nb-1)]++);
+   const se=SIG/Math.sqrt(n),peak=k*bw*S.npdf(MU,MU,se),mx=Math.max(1,...bins,curve&&k?peak:0),px=(C.W-36)/nb,sy=v=>150-v/mx*136;
+   let s=bins.map((c,i)=>c?`<rect x="${sx(i*bw)+0.3}" y="${sy(c)}" width="${px-0.6}" height="${150-sy(c)}" fill="var(--mean)"/>`:"").join("");
+   if(curve&&k){let d="";for(let x=0;x<=XM;x+=0.1)d+=(d?"L":"M")+sx(x).toFixed(1)+" "+Math.max(8,sy(k*bw*S.npdf(x,MU,se))).toFixed(1);s+=`<path d="${d}" fill="none" stroke="var(--curve)" stroke-width="2"/>`}
+   s+=`<line x1="${sx(MU)}" x2="${sx(MU)}" y1="8" y2="150" stroke="var(--ink)" stroke-dasharray="3 3"/>`;
+   if(!k)s+=`<text class="axis" x="${C.W/2}" y="90" text-anchor="middle" style="font-size:11px">No means yet for n = ${n}. Draw a sample to add the first.</text>`;
+   el.querySelector("#cls").innerHTML=C.svg(190,s+ax(150),`Class sample means for n = ${n}`);
+   const avg=k?S.mean(ms):null,sd=k>1?S.sd(ms):null;
+   el.querySelector("#st").innerHTML=`<div class="stat"><b>${k}</b><span>means</span></div><div class="stat"><b>${f(avg)}</b><span>average (μ = ${f(MU)})</span></div><div class="stat"><b>${f(sd)}</b><span>SD of means (σ/√n = ${f(se)})</span></div>`;
+   el.querySelector("#rev").innerHTML=k>=20?`<div class="feedback"><p>With ${k} means the pile is ${n===5?"nearly bell-shaped, with a little leftover skew":"bell-shaped"} around μ, even though single waits are skewed. That's the central limit theorem.${pred?` You predicted “${PRED.find(p=>p[0]===pred)[1].toLowerCase()}”.`:""}</p></div>`:k?`<p class="lead">${20-k} more means for n = ${n} until the pattern is clear.</p>`:"";
+   el.querySelector("#cv").textContent=curve?"Hide CLT curve":"Show CLT curve"};
+  paintTop();paintClass();
+  el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+   if(b.dataset.p){pred=b.dataset.p;A.store.set("sm.pred",pred);paintTop();paintClass()}
+   if(b.dataset.n){n=+b.dataset.n;A.store.set("sm.n",n);paintTop();paintClass()}});
+  el.querySelector("#draw").addEventListener("click",()=>{
+   const vals=Array.from({length:n},()=>POP[Math.floor(S.r()*POP.length)]),m=S.mean(vals);last={vals,m};
+   el.querySelector("#xb").textContent=f(m);const e={n,mean:Math.round(m*1000)/1000,team:A.me.team||null};
+   if(A.pool.db&&A.pool.canWrite)A.pool.db.collection("means").add({round:A.pool.round,...e,at:Date.now()}).catch(()=>{mine.push(e);paintClass()});else mine.push(e);
+   paintTop();paintClass();draws++;if(draws===5)A.award("sample-machine",30,30)});
+  el.querySelector("#sim").addEventListener("click",()=>{for(let j=0;j<50;j++){let t=0;for(let i=0;i<n;i++)t+=POP[Math.floor(S.r()*POP.length)];sim.push({n,mean:t/n})}paintClass()});
+  el.querySelector("#cv").addEventListener("click",()=>{curve=!curve;paintClass()});
+  const watch=()=>{if(unsub)unsub();pool=[];if(!A.pool.db)return;
+   unsub=A.pool.db.collection("means").where("round","==",A.pool.round).limit(1000).onSnapshot(s=>{pool=s.docs.map(d=>d.data()||{}).filter(m=>typeof m.mean==="number"&&isFinite(m.mean)&&[5,15,30].includes(m.n)).map(m=>({n:m.n,mean:Math.max(0,Math.min(60,m.mean))}));paintClass()},()=>{})};
+  let rd=A.pool.round;watch();
+  const off=A.onPool(()=>{if(A.pool.round!==rd||(!unsub&&A.pool.db)){rd=A.pool.round;sim=[];watch()}});
+  return ()=>{off();if(unsub)unsub()};
+ }});
+
+/* ---------- Interval Hunters ---------- */
+A.reg({id:"interval-hunters",title:"Interval Hunters",mode:"In class",units:[["inf",[2,6]],["bas",[3]]],topics:"confidence interval coverage bootstrap t-interval confidence level",
+ blurb:"Build confidence intervals and see how often the class captures the truth.",
+ how:"The true mean sleep of students is hidden at 7.0 hours. Each interval is one student's attempt to capture it. Change the confidence level and method, then answer the questions.",
+ mount(el){
+  const MU0=7.0,SG=1.2,N=20;let conf=0.95,method="t",ivs=[];
+  el.innerHTML=`<section class="card"><div class="row"><span class="eyebrow">Confidence</span><div class="seg" id="cf"></div></div><div class="row"><span class="eyebrow">Method</span><div class="seg" id="md"></div></div>
+   <div class="row"><button class="btn" id="one">Build my interval</button><button class="btn ghost" id="many">Add 20 classmates</button><button class="btn ghost" id="clr">Clear</button></div><div id="pl"></div><div class="stats" id="st"></div></section><div id="qz"></div>`;
+  const make=()=>{const x=Array.from({length:N},()=>S.norm(MU0,SG));const m=S.mean(x);let lo,hi;
+   if(method==="t"){const t=S.tq(1-(1-conf)/2,N-1),se=S.sd(x)/Math.sqrt(N);lo=m-t*se;hi=m+t*se}
+   else{const bs=[];for(let b=0;b<400;b++){let s=0;for(let i=0;i<N;i++)s+=x[Math.floor(S.r()*N)];bs.push(s/N)}bs.sort((a,b)=>a-b);lo=bs[Math.floor((1-conf)/2*400)];hi=bs[Math.ceil((1-(1-conf)/2)*400)-1]}
+   return {lo,hi,m,conf,method,hit:lo<=MU0&&MU0<=hi}};
+  const paint=()=>{
+   el.querySelector("#cf").innerHTML=[0.8,0.9,0.95,0.99].map(c=>`<button data-c="${c}" aria-pressed="${conf===c}">${c*100}%</button>`).join("");
+   el.querySelector("#md").innerHTML=[["t","t-interval"],["boot","Bootstrap"]].map(([k,l])=>`<button data-m="${k}" aria-pressed="${method===k}">${l}</button>`).join("");
+   const show=ivs.slice(-40),sx=C.scale(5.5,8.5,20,C.W-10),H=Math.max(80,show.length*6+40);
+   let s=`<line x1="${sx(MU0)}" x2="${sx(MU0)}" y1="6" y2="${H-26}" stroke="var(--ink)" stroke-dasharray="3 3"/><text class="axis" x="${sx(MU0)+4}" y="12" style="fill:var(--ink)">μ = 7.0</text>`;
+   show.forEach((v,i)=>{const y=18+i*6;s+=`<line x1="${sx(Math.max(5.5,v.lo))}" x2="${sx(Math.min(8.5,v.hi))}" y1="${y}" y2="${y}" stroke="${v.hit?"var(--ok)":"var(--bad)"}" stroke-width="2.5"/><circle cx="${sx(v.m)}" cy="${y}" r="1.8" fill="var(--ink)"/>`});
+   if(!show.length)s+=`<text class="axis" x="${C.W/2}" y="44" text-anchor="middle" style="font-size:11px">Build an interval to start the hunt.</text>`;
+   el.querySelector("#pl").innerHTML=C.svg(H,s+C.xaxis(sx,H-26,5.5,8.5,0.5,v=>v,"hours of sleep"),"Confidence intervals");
+   const k=ivs.length,h=ivs.filter(v=>v.hit).length,w=k?S.mean(ivs.map(v=>v.hi-v.lo)):null;
+   el.querySelector("#st").innerHTML=`<div class="stat"><b>${k}</b><span>intervals</span></div><div class="stat"><b>${k?Math.round(h/k*100)+"%":"—"}</b><span>captured μ</span></div><div class="stat"><b>${f(w)}</b><span>average width (h)</span></div>`};
+  paint();
+  el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.c){conf=+b.dataset.c;ivs=[];paint()}if(b.dataset.m){method=b.dataset.m;ivs=[];paint()}});
+  el.querySelector("#one").addEventListener("click",()=>{ivs.push(make());paint()});
+  el.querySelector("#many").addEventListener("click",()=>{for(let i=0;i<20;i++)ivs.push(make());paint()});
+  el.querySelector("#clr").addEventListener("click",()=>{ivs=[];paint()});
+  const Q=[{html:"<p>You switch from 95% to 99% confidence. What happens to the intervals?</p>",choices:["They get wider","They get narrower","They stay the same width"],answer:0,explain:"To be more confident of capturing μ, you need a wider net."},
+   {html:"<p>Your own 95% interval is (6.6, 7.5). Which statement is correct?</p>",choices:["The method captures μ in about 95% of samples; this interval either does or doesn't","There's a 95% chance μ is between 6.6 and 7.5 after the fact, for sure","95% of students sleep between 6.6 and 7.5 hours"],answer:0,explain:"The 95% describes the method's long-run success rate, as the class picture shows. It's not about individual students' sleep."},
+   {html:"<p>How would a larger sample size (say n = 80) change a 95% interval?</p>",choices:["Narrower, same 95% capture rate","Wider, higher capture rate","Narrower, lower capture rate"],answer:0,explain:"The standard error σ/√n shrinks, so intervals get narrower while the capture rate stays at 95%."},
+   {html:"<p>When is the bootstrap especially useful?</p>",choices:["When there's no simple formula or the data's shape is unusual","Only when the population is exactly normal","When you already know μ"],answer:0,explain:"Resampling your own data mimics drawing new samples, so it works without a formula."}];
+  A.quiz(el.querySelector("#qz"),{id:"interval-hunters",n:Q.length,intro:"<strong>Check your understanding</strong> after hunting a few intervals.",gen:i=>{const mc=A.mc(Q[i].choices,0);return {...Q[i],...mc}}});
+ }});
+
+/* ---------- Courtroom p-Value ---------- */
+function caseGen(){
+ const t=S.int(0,3);const alpha=S.pick([0.05,0.01]);
+ if(t===0){const n=25,sd=1.5,xb=+(5+S.pick([0.2,0.4,0.6,0.8])).toFixed(1),tt=(xb-5)/(sd/Math.sqrt(n)),p=1-S.tcdf(tt,n-1);
+  return {story:`A café claims its average wait is <strong>5 minutes</strong>. Students suspect it's longer. A sample of ${n} waits has mean ${xb} min and SD ${sd} min.`,h0:"H₀: μ = 5 minutes",bad:["H₀: μ > 5 minutes","H₀: x̄ = "+xb+" minutes"],stat:`t = ${f(tt)}, df = ${n-1}`,p,alpha}}
+ if(t===1){const n=100,k=S.pick([55,58,61,64]),z=(k/n-0.5)/Math.sqrt(0.25/n),p=2*(1-S.ncdf(Math.abs(z)));
+  return {story:`A coin is accused of being unfair. In ${n} flips it lands heads ${k} times.`,h0:"H₀: p = 0.5",bad:["H₀: p ≠ 0.5","H₀: p̂ = "+(k/n)],stat:`z = ${f(z)}`,p,alpha}}
+ if(t===2){const tt=S.pick([0.8,1.6,2.3,3.1]),df=58,p=S.tp2(tt,df);
+  return {story:`A new teaching method is trialled. 30 students get it, 30 get the old method. The new group's average exam mark is higher.`,h0:"H₀: μ_new = μ_old",bad:["H₀: μ_new > μ_old","H₀: x̄_new = x̄_old"],stat:`two-sample t = ${tt}, df = ${df}`,p,alpha}}
+ const z=S.pick([0.9,1.7,2.4,3.0]),p=2*(1-S.ncdf(z));
+ return {story:`A drug trial: recovery rates are compared between the drug group and a placebo group.`,h0:"H₀: p_drug = p_placebo",bad:["H₀: p_drug > p_placebo","H₀: the drug works"],stat:`z = ${z}`,p,alpha}}
+A.reg({id:"courtroom-p-value",title:"Courtroom p-Value",star:true,mode:"In class",units:[["inf",[3,4]],["bas",[4]]],topics:"hypothesis test p-value significance level type I error type II error power null hypothesis",
+ blurb:"Put the null hypothesis on trial: evidence, verdict, and the errors courts make.",
+ how:"The null hypothesis is the defendant, presumed innocent. Your team rotates roles: the prosecutor states H₀, the jury reaches a verdict from the p-value, and the defence spots the error if the verdict was wrong.",
+ mount(el){A.quiz(el,{id:"courtroom-p-value",n:6,gen:i=>{const c=caseGen();const rej=c.p<c.alpha;const h0true=S.r()<0.5;
+  const h=A.mc([c.h0,...c.bad],0);const err=rej&&h0true?0:!rej&&!h0true?1:2;
+  return {role:["Prosecutor","Jury","Defence"][i%3],html:`<p class="eyebrow">Case ${i+1}</p><p>${c.story}</p>`,steps:[
+   {html:"<p><strong>State the defendant: which is the null hypothesis?</strong></p>",...h,explain:"H₀ is the claim of no effect or no difference, written about the population parameter, never the sample statistic."},
+   {html:`<p>Evidence: ${c.stat}, <strong>p = ${S.pfmt(c.p)}</strong>. Significance level α = ${c.alpha}.</p><p><strong>Verdict?</strong></p>`,choices:["Reject H₀ (guilty)","Fail to reject H₀ (not proven)"],answer:rej?0:1,explain:rej?`p < ${c.alpha}, so data this extreme would be rare if H₀ were true. Reject H₀.`:`p ≥ ${c.alpha}, so the evidence isn't strong enough. We fail to reject H₀; that doesn't prove H₀ is true.`},
+   {html:`<p>Years later, a huge study shows H₀ was actually <strong>${h0true?"true":"false"}</strong>. Your verdict was “${rej?"reject":"fail to reject"}”.</p><p><strong>What happened?</strong></p>`,choices:["Type I error: convicted an innocent H₀","Type II error: let a guilty H₀ go free","No error: the verdict was right"],answer:err,explain:["Rejecting a true H₀ is a Type I error. Its chance is α.","Missing a real effect is a Type II error. Larger samples raise power and make it less likely.","The verdict matched the truth."][err]}]}}})}});
+
+/* ---------- Which Test? Quest ---------- */
+const WT=[
+ {s:"Is the mean daily screen time of students different from 4 hours? One sample of 40 students, roughly symmetric data.",a:"One-sample t-test"},
+ {s:"Do students who sleep 8+ hours score higher on average than those who sleep less? Two separate groups, numeric scores, roughly normal.",a:"Two-sample (independent) t-test"},
+ {s:"Each student's anxiety score is measured before and after a mindfulness course.",a:"Paired t-test"},
+ {s:"Compare mean exam scores across four tutorial groups. Data roughly normal, similar spreads.",a:"One-way ANOVA"},
+ {s:"Plant growth is measured under two fertilisers crossed with two light levels. Does the fertiliser effect depend on light?",a:"Two-way ANOVA"},
+ {s:"A café claims 60% of students buy coffee daily. You survey 150 students.",a:"One-sample proportion test"},
+ {s:"Is the proportion of students who vote different for on-campus vs off-campus students?",a:"Two-sample proportion test"},
+ {s:"Is a six-sided die fair? You record the counts of each face from 300 rolls.",a:"Chi-square goodness-of-fit"},
+ {s:"Is choice of study location (library, home, café) related to year level (1st, 2nd, 3rd)?",a:"Chi-square test of independence"},
+ {s:"Before-and-after pain scores for 12 patients. The differences are strongly skewed with an outlier.",a:"Sign test / Wilcoxon signed-rank"},
+ {s:"Compare satisfaction ratings (1–7 scale, heavily skewed) between two independent groups of 15.",a:"Mann–Whitney U"},
+ {s:"Compare waiting times across three clinics. Small samples, strongly skewed data.",a:"Kruskal–Wallis"},
+ {s:"Ten tasters each rate the same four coffees on a ranking scale.",a:"Friedman"},
+ {s:"Is there a linear relationship between hours worked and GPA?",a:"Test for correlation"}];
+const ALLT=A.TESTS.map(r=>r[1]);
+A.reg({id:"which-test-quest",title:"Which Test? Quest",star:true,mode:"Both",units:[["inf",[5]],["bas",[7,8]]],topics:"choose test t-test ANOVA chi-square nonparametric assumptions proportion",
+ blurb:"Read the research question, check the data, choose the right test.",
+ how:"Think through three questions for each scenario: what type of outcome, how many groups, and whether the data meet the assumptions. Then choose. The Test finder on the home screen lists every test.",
+ mount(el){const order=S.shuffle(WT).slice(0,10);A.quiz(el,{id:"which-test-quest",n:10,gen:i=>{const c=order[i];const d=S.shuffle(ALLT.filter(t=>t!==c.a)).slice(0,3);const mc=A.mc([c.a,...d],0);const row=A.TESTS.find(r=>r[1]===c.a);
+  return {role:["Analyst","Sceptic","Reporter"][i%3],html:`<p>${c.s}</p><p style="margin-top:6px"><strong>Which test fits best?</strong></p>`,...mc,explain:`${c.a}: ${row[2].toLowerCase()} (${row[0].toLowerCase()}).`}}})}});
+
+/* ---------- Class Poll Showdown ---------- */
+const POLLS=[{id:"coffee",q:"Did you drink coffee today?",opts:["Yes","No"],claim:"The campus café claims 60% of students drink coffee every day."},
+ {id:"study",q:"Where do you study best?",opts:["Library","Home","Café","Campus lounge"],claim:"Is every study spot equally popular?"}];
+A.reg({id:"class-poll-showdown",title:"Class Poll Showdown",star:true,mode:"In class",units:[["inf",[5]],["bas",[5]]],topics:"proportion test chi-square goodness of fit poll categorical data",
+ blurb:"The class's own votes become the data for a proportion test and a chi-square test.",
+ how:"Vote in both polls. As votes arrive, the tests update live. Then answer the questions about what the class data show.",
+ mount(el){
+  const voted=A.store.get("polls.voted",{}),local={coffee:[],study:[]},sim={coffee:[],study:[]};let live={coffee:[],study:[]},unsub=null;
+  el.innerHTML=POLLS.map(p=>`<section class="card" id="p-${p.id}"><h2>${p.q}</h2><p class="lead">${p.claim}</p><div class="row vb"></div><div class="ch"></div><div class="res"></div></section>`).join("")+`<div class="row"><button class="btn ghost" id="simv">Add 30 simulated votes</button></div><div id="qz"></div>`;
+  const votes=id=>(A.pool.db?live[id]:local[id]).concat(sim[id]);
+  const paint=()=>POLLS.forEach(p=>{const box=el.querySelector("#p-"+p.id),v=votes(p.id),n=v.length,cnt=p.opts.map((_,k)=>v.filter(x=>x===k).length);
+   box.querySelector(".vb").innerHTML=p.opts.map((o,k)=>`<button class="chip" data-poll="${p.id}" data-k="${k}" aria-pressed="${voted[p.id]===k}" ${voted[p.id]!=null?"disabled":""}>${o}</button>`).join("")+(voted[p.id]!=null?`<span class="lead" style="font-size:.8rem">Thanks, your vote is in.</span>`:"");
+   box.querySelector(".ch").innerHTML=C.bars(p.opts,cnt,{label:p.q,colors:p.opts.map((_,k)=>["var(--t1)","var(--t2)","var(--t3)","var(--t4)"][k])});
+   let r="";
+   if(n<5)r=`<p class="lead">${5-n} more votes needed before testing.</p>`;
+   else if(p.id==="coffee"){const ph=cnt[0]/n,z=(ph-0.6)/Math.sqrt(0.24/n),pv=2*(1-S.ncdf(Math.abs(z)));r=`<div class="stats"><div class="stat"><b>${f(ph)}</b><span>p̂ (n = ${n})</span></div><div class="stat"><b>${f(z)}</b><span>z vs claim 0.60</span></div><div class="stat"><b>${S.pfmt(pv)}</b><span>p-value</span></div></div><p class="lead">${pv<0.05?"The class data contradict the café's claim at α = 0.05.":"Not enough evidence against the café's claim at α = 0.05."}</p>`}
+   else{const e=n/4;let chi=0;cnt.forEach(c=>chi+=(c-e)**2/e);const pv=S.chip(chi,3);r=`<div class="stats"><div class="stat"><b>${f(e,1)}</b><span>expected per spot</span></div><div class="stat"><b>${f(chi)}</b><span>χ², df = 3</span></div><div class="stat"><b>${S.pfmt(pv)}</b><span>p-value</span></div></div><p class="lead">${pv<0.05?"The spots are not equally popular (α = 0.05).":"No strong evidence that some spots are more popular."}${e<5?" Expected counts are below 5, so treat this result with caution.":""}</p>`}
+   box.querySelector(".res").innerHTML=r});
+  paint();
+  el.addEventListener("click",e=>{const b=e.target.closest("[data-poll]");if(!b)return;const id=b.dataset.poll,k=+b.dataset.k;voted[id]=k;A.store.set("polls.voted",voted);
+   if(A.pool.db&&A.pool.canWrite)A.pool.db.collection("votes").add({round:A.pool.round,poll:id,choice:k,at:Date.now()}).catch(()=>{local[id].push(k);paint()});else local[id].push(k);paint()});
+  el.querySelector("#simv").addEventListener("click",()=>{for(let i=0;i<30;i++){sim.coffee.push(S.r()<0.5?0:1);const u=S.r();sim.study.push(u<0.35?0:u<0.65?1:u<0.85?2:3)}paint()});
+  const watch=()=>{if(unsub)unsub();live={coffee:[],study:[]};if(!A.pool.db)return;unsub=A.pool.db.collection("votes").where("round","==",A.pool.round).limit(1000).onSnapshot(s=>{live={coffee:[],study:[]};s.docs.forEach(d=>{const v=d.data()||{};if(live[v.poll]&&Number.isInteger(v.choice)&&v.choice>=0&&v.choice<(v.poll==="coffee"?2:4))live[v.poll].push(v.choice)});paint()},()=>{})};
+  let rd=A.pool.round;watch();const off=A.onPool(()=>{if(A.pool.round!==rd||(!unsub&&A.pool.db)){rd=A.pool.round;watch()}});
+  const Q=[{html:"<p>Which test checks the café's 60% claim?</p>",choices:["One-sample proportion test","Chi-square test of independence","Two-sample t-test"],answer:0,explain:"One categorical yes/no variable compared with a claimed proportion."},
+   {html:"<p>For the study-spot poll, what does a small p-value mean?</p>",choices:["The spots are not all equally popular","Every spot is equally popular","The sample is too small"],answer:0,explain:"The chi-square goodness-of-fit test compares observed counts with equal expected counts."},
+   {html:"<p>The chi-square result comes with a warning when expected counts are below 5. Why?</p>",choices:["The chi-square approximation becomes unreliable","The test needs exactly 5 groups","Small counts make p-values always small"],answer:0,explain:"The test relies on a large-sample approximation. Small expected counts make it inaccurate."},
+   {html:"<p>Is this class a random sample of all students?</p>",choices:["Probably not, so generalise with care","Yes, because everyone voted","It doesn't matter for a hypothesis test"],answer:0,explain:"A class is a convenience sample. The test's maths still works, but the conclusion applies most safely to students like these."}];
+  A.quiz(el.querySelector("#qz"),{id:"class-poll-showdown",n:Q.length,intro:"<strong>Check your understanding</strong> once the votes are in.",gen:i=>({...Q[i],...A.mc(Q[i].choices,0)})});
+  return ()=>{off();if(unsub)unsub()};
+ }});
+
+/* ---------- Experiment Lab ---------- */
+function anova2(cells,r){ /* cells[a][b] arrays of length r */
+ const a=2,b=2,all=cells.flat(2),G=S.mean(all),m=cells.map(row=>row.map(S.mean)),mA=[0,1].map(i=>S.mean(cells[i].flat())),mB=[0,1].map(j=>S.mean([...cells[0][j],...cells[1][j]]));
+ const ssA=b*r*mA.reduce((s,x)=>s+(x-G)**2,0),ssB=a*r*mB.reduce((s,x)=>s+(x-G)**2,0);let ssAB=0,ssE=0;
+ for(let i=0;i<2;i++)for(let j=0;j<2;j++){ssAB+=r*(m[i][j]-mA[i]-mB[j]+G)**2;cells[i][j].forEach(y=>ssE+=(y-m[i][j])**2)}
+ const dfE=a*b*(r-1),msE=ssE/dfE,row=(ss,df)=>({ss,df,ms:ss/df,F:ss/df/msE,p:S.fp(ss/df/msE,df,dfE)});
+ return {m,A:row(ssA,1),B:row(ssB,1),AB:row(ssAB,1),E:{ss:ssE,df:dfE,ms:msE}}}
+A.reg({id:"experiment-lab",title:"Experiment Lab",mode:"After class",units:[["bas",[6]],["reg",[4]]],topics:"two-way ANOVA interaction main effect experiment design replicates F-test",
+ blurb:"Design a two-factor plant experiment, run it, and read the ANOVA.",
+ how:"Choose how many plants per group, grow them, then read the interaction plot and ANOVA table. Each round uses a new hidden truth, so let the data decide.",
+ mount(el){const truths=S.shuffle([{f:4,l:6,i:5},{f:4,l:6,i:0},{f:0,l:7,i:0}]);
+  A.rounds(el,{id:"experiment-lab",n:3,max:10,render(body,api){
+   const T=truths[api.round];let r=5,res=null;
+   body.innerHTML=`<p class="stem">Factor A: fertiliser (none, organic). Factor B: light (low, high). Response: growth in cm after 4 weeks.</p><div class="row"><span class="eyebrow">Plants per group</span><div class="seg" id="rp"></div><button class="btn" id="grow">Grow</button></div><div id="out"></div>`;
+   const segs=()=>body.querySelector("#rp").innerHTML=[3,5,10].map(k=>`<button data-r="${k}" aria-pressed="${r===k}">${k}</button>`).join("");segs();
+   body.querySelector("#rp").addEventListener("click",e=>{const b=e.target.closest("button");if(b&&!res){r=+b.dataset.r;segs()}});
+   body.querySelector("#grow").addEventListener("click",ev=>{ev.target.disabled=true;
+    const cells=[0,1].map(i=>[0,1].map(j=>Array.from({length:r},()=>20+T.f*i+T.l*j+T.i*i*j+S.norm(0,3))));res=anova2(cells,r);
+    const sx=C.scale(-0.3,1.3,40,C.W-60),all=cells.flat(2),sy=C.scale(Math.min(...all.map(()=>Math.min(...res.m.flat())))-4,Math.max(...res.m.flat())+4,150,14);
+    let s="";[0,1].forEach(i=>{const col=i?"var(--t3)":"var(--t4)";s+=`<line x1="${sx(0)}" y1="${sy(res.m[i][0])}" x2="${sx(1)}" y2="${sy(res.m[i][1])}" stroke="${col}" stroke-width="2.5"/>`;[0,1].forEach(j=>s+=`<circle cx="${sx(j)}" cy="${sy(res.m[i][j])}" r="4.5" fill="${col}"/>`);s+=`<text class="axis" x="${sx(1)+8}" y="${sy(res.m[i][1])+3}" style="fill:${col}">${i?"Organic":"None"}</text>`});
+    s+=`<text class="axis" x="${sx(0)}" y="166" text-anchor="middle">Low light</text><text class="axis" x="${sx(1)}" y="166" text-anchor="middle">High light</text><line x1="${sx(-0.3)}" x2="${sx(1.3)}" y1="152" y2="152" stroke="var(--line)"/>`;
+    const tr=(n,o)=>`<tr><td>${n}</td><td class="num">${o.df}</td><td class="num">${f(o.ss,1)}</td><td class="num">${f(o.F)}</td><td class="num">${S.pfmt(o.p)}</td></tr>`;
+    const out=body.querySelector("#out");
+    out.innerHTML=C.svg(176,s,"Interaction plot of mean growth")+`<div class="scroll"><table class="t"><thead><tr><th>Source</th><th>df</th><th>SS</th><th>F</th><th>p</th></tr></thead><tbody>${tr("Fertiliser",res.A)}${tr("Light",res.B)}${tr("Fertiliser × Light",res.AB)}<tr><td>Error</td><td class="num">${res.E.df}</td><td class="num">${f(res.E.ss,1)}</td><td></td><td></td></tr></tbody></table></div><p><strong>Is there a significant interaction at α = 0.05?</strong></p><div class="choices"><button class="choice" data-k="1">Yes: the fertiliser effect depends on light</button><button class="choice" data-k="0">No: the effects simply add up</button></div><div id="fb"></div>`;
+    const sig=res.AB.p<0.05?1:0;
+    out.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>{const ok=+b.dataset.k===sig;if(ok)api.add(10);out.querySelectorAll(".choice").forEach(x=>{x.disabled=true;if(+x.dataset.k===sig)x.classList.add("right");else if(x===b)x.classList.add("wrong")});
+     out.querySelector("#fb").innerHTML=`<div class="feedback ${ok?"":"no"}" style="margin-top:10px"><p>Interaction p = ${S.pfmt(res.AB.p)}. ${sig?"Non-parallel lines in the plot match a real interaction.":"Roughly parallel lines mean the effects add up."} The hidden truth this round: fertiliser +${T.f} cm, high light +${T.l} cm, interaction +${T.i} cm.${r===3?" With only 3 plants per group, small effects are easy to miss: low power.":""}</p></div><button class="btn" id="nx" style="margin-top:10px">Next</button>`;out.querySelector("#nx").addEventListener("click",api.next)}));
+   });
+  }})}});
+})();
+/* ================= Games 3: regression + data science ================= */
+(function(){
+const A=APP,S=A.S,C=A.C,f=S.fmt;
+
+function ols(X,y){ /* X rows without intercept */
+ const n=X.length,p=X[0].length+1,M=X.map(r=>[1,...r]);
+ const XtX=Array.from({length:p},(_,i)=>Array.from({length:p},(_,j)=>M.reduce((s,r)=>s+r[i]*r[j],0)));
+ const Xty=Array.from({length:p},(_,i)=>M.reduce((s,r,k)=>s+r[i]*y[k],0));
+ const inv=invert(XtX);if(!inv)return null;
+ const b=inv.map(row=>row.reduce((s,v,j)=>s+v*Xty[j],0));
+ const fit=x=>b[0]+x.reduce((s,v,j)=>s+v*b[j+1],0);
+ const res=X.map((r,k)=>y[k]-fit(r)),sse=res.reduce((s,v)=>s+v*v,0),my=S.mean(y),sst=y.reduce((s,v)=>s+(v-my)**2,0);
+ const s2=sse/(n-p),se=inv.map((r,i)=>Math.sqrt(Math.max(0,r[i]*s2)));
+ return {b,se,fit,sse,r2:1-sse/sst,adj:1-(sse/(n-p))/(sst/(n-1)),df:n-p};
+}
+function invert(m){const n=m.length,a=m.map((r,i)=>[...r,...Array.from({length:n},(_,j)=>i===j?1:0)]);
+ for(let c=0;c<n;c++){let p=c;for(let r=c+1;r<n;r++)if(Math.abs(a[r][c])>Math.abs(a[p][c]))p=r;if(Math.abs(a[p][c])<1e-10)return null;[a[c],a[p]]=[a[p],a[c]];const d=a[c][c];for(let j=0;j<2*n;j++)a[c][j]/=d;for(let r=0;r<n;r++)if(r!==c){const k=a[r][c];for(let j=0;j<2*n;j++)a[r][j]-=k*a[c][j]}}
+ return a.map(r=>r.slice(n))}
+
+/* ---------- Line Fit Challenge ---------- */
+A.reg({id:"line-fit-challenge",title:"Line Fit Challenge",mode:"Both",units:[["reg",[1,2]]],topics:"least squares regression line slope intercept residuals residual plot influential point",
+ blurb:"Fit a line by eye, then read the residuals to find problems.",
+ how:"Use the sliders to fit the best line you can. The score compares your sum of squared residuals with least squares. Then judge what the residual plot shows.",
+ mount(el){const kinds=["linear",...S.shuffle(["linear","curved","influential"])];
+  A.rounds(el,{id:"line-fit-challenge",n:4,max:10,render(body,api){
+   const kind=kinds[api.round],a=S.unif(2,8),b=S.unif(1.5,3),xs=[],ys=[];
+   for(let i=0;i<24;i++){const x=S.unif(0,10);xs.push(x);ys.push(kind==="curved"?a+0.9*(x-5)**2+S.norm(0,2):a+b*x+S.norm(0,2.2))}
+   if(kind==="influential"){xs.push(10);ys.push(a+b*10-22)}
+   const fit=ols(xs.map(x=>[x]),ys);let ui=0,us=1,locked=false;
+   const sx=C.scale(-0.5,10.5,30,C.W-10),ymin=Math.min(...ys)-3,ymax=Math.max(...ys)+3,sy=C.scale(ymin,ymax,180,10);
+   body.innerHTML=`<div class="pl"></div><div class="row between"><span class="eyebrow">Intercept</span><span class="num" id="iv"></span></div><input type="range" id="ii" min="${Math.floor(ymin-20)}" max="${Math.ceil(ymax)}" step="0.1" value="0" aria-label="Intercept"><div class="row between"><span class="eyebrow">Slope</span><span class="num" id="sv"></span></div><input type="range" id="ss" min="-3" max="6" step="0.05" value="1" aria-label="Slope"><div class="row between"><span>Your sum of squared residuals: <b class="num" id="sse"></b></span><button class="btn" id="lock">Lock in</button></div><div id="out"></div>`;
+   const sseU=()=>xs.reduce((s,x,i)=>s+(ys[i]-(ui+us*x))**2,0);
+   const paint=()=>{let s=xs.map((x,i)=>`<circle cx="${sx(x)}" cy="${sy(ys[i])}" r="4" fill="var(--pop)"/>`).join("");
+    s+=`<line x1="${sx(-0.5)}" y1="${sy(ui+us*-0.5)}" x2="${sx(10.5)}" y2="${sy(ui+us*10.5)}" stroke="var(--mean)" stroke-width="2.5"/>`;
+    if(locked)s+=`<line x1="${sx(-0.5)}" y1="${sy(fit.b[0]-0.5*fit.b[1])}" x2="${sx(10.5)}" y2="${sy(fit.b[0]+10.5*fit.b[1])}" stroke="var(--curve)" stroke-width="2" stroke-dasharray="5 4"/>`;
+    body.querySelector(".pl").innerHTML=C.svg(210,`<defs><clipPath id="cp"><rect x="30" y="10" width="${C.W-40}" height="170"/></clipPath></defs><g clip-path="url(#cp)">${s}</g>`+C.xaxis(sx,182,0,10,2,v=>v,"x"),"Scatterplot with your line");
+    body.querySelector("#iv").textContent=f(ui,1);body.querySelector("#sv").textContent=f(us);body.querySelector("#sse").textContent=f(sseU(),0)};
+   paint();
+   body.querySelector("#ii").addEventListener("input",e=>{ui=+e.target.value;paint()});body.querySelector("#ss").addEventListener("input",e=>{us=+e.target.value;paint()});
+   body.querySelector("#lock").addEventListener("click",ev=>{ev.target.disabled=true;locked=true;body.querySelectorAll("input").forEach(i=>i.disabled=true);paint();
+    const ratio=Math.min(1,fit.sse/sseU()),p=Math.round(6*ratio*ratio);api.add(p);
+    const res=xs.map((x,i)=>ys[i]-fit.fit([x])),rm=Math.max(...res.map(Math.abs))+1,ry=C.scale(-rm,rm,110,10);
+    let rs=`<line x1="30" x2="${C.W-10}" y1="${ry(0)}" y2="${ry(0)}" stroke="var(--line)"/>`+xs.map((x,i)=>`<circle cx="${sx(x)}" cy="${ry(res[i])}" r="3.5" fill="var(--mean)"/>`).join("");
+    const ans=kind==="curved"?1:kind==="influential"?2:0,mc=A.mc(["Random scatter: a straight line fits well","A curved pattern: a straight line misses the shape","One unusual point is pulling the line"],ans);
+    const out=body.querySelector("#out");
+    out.innerHTML=`<div class="feedback"><p>Least squares (dashed): ŷ = ${f(fit.b[0],1)} + ${f(fit.b[1])}x, SSE ${f(fit.sse,0)}. Your fit earns ${p}/6.</p></div><p style="margin-top:8px"><strong>Residual plot</strong> (residual vs x)</p>${C.svg(126,rs+C.xaxis(sx,112,0,10,2),"Residual plot")}<p><strong>What does the residual plot show?</strong></p><div class="choices">${mc.choices.map((c,k)=>`<button class="choice" data-k="${k}">${c}</button>`).join("")}</div>`;
+    out.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>{const ok=+b.dataset.k===mc.answer;if(ok)api.add(4);out.querySelectorAll(".choice").forEach((x,j)=>{x.disabled=true;if(j===mc.answer)x.classList.add("right");else if(x===b)x.classList.add("wrong")});
+     out.insertAdjacentHTML("beforeend",`<div class="feedback ${ok?"":"no"}" style="margin-top:10px"><p>${["No pattern left in the residuals means the line has captured the trend.","A U-shape in the residuals means the relationship bends; try a curved model.","The point at x = 10 sits far below the others and drags the slope down. Check it, and report results with and without it."][ans]}</p></div><button class="btn" id="nx" style="margin-top:10px">Next</button>`);out.querySelector("#nx").addEventListener("click",api.next)}));
+   });
+  }})}});
+
+/* ---------- Hidden Confounder ---------- */
+const tbl=(head,rows)=>`<div class="scroll"><table class="t"><thead><tr>${head.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td class="num">${c}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+const PUZ=[
+ {intro:`<p>Two treatments for kidney stones. Overall success:</p>${tbl(["Treatment","Successes","Rate"],[["A","273 / 350","78%"],["B","289 / 350","83%"]])}`,
+  q1:"Overall, which treatment looks better?",c1:["A","B"],a1:1,
+  split:`<p>Now split by stone size:</p>${tbl(["Stone size","A","B"],[["Small","81 / 87 = 93%","234 / 270 = 87%"],["Large","192 / 263 = 73%","55 / 80 = 69%"]])}`,
+  q2:"Within each stone size, which is better?",c2:["A, in both groups","B, in both groups","It depends on size"],a2:0,
+  q3:"Why does the overall comparison flip?",c3:["Doctors gave A to more of the hard, large-stone cases","Treatment B is cheaper","The sample sizes are too small"],a3:0,
+  e:"Stone size affects both which treatment was given and the success rate. Ignoring it reverses the conclusion: Simpson's paradox. In regression, adding stone size as a predictor changes the treatment coefficient."},
+ {intro:`<p>Admission rates at a university, all applicants:</p>${tbl(["Group","Admitted","Rate"],[["Men","560 / 800","70%"],["Women","240 / 600","40%"]])}`,
+  q1:"Overall, which group has the higher admission rate?",c1:["Men","Women"],a1:0,
+  split:`<p>Split by faculty:</p>${tbl(["Faculty","Men","Women"],[["Faculty X (admits most)","520 / 650 = 80%","130 / 150 = 87%"],["Faculty Y (very competitive)","40 / 150 = 27%","110 / 450 = 24%"]])}`,
+  q2:"Within each faculty, how do the rates compare?",c2:["Similar, women slightly higher in X","Men much higher in both","Women much lower in both"],a2:0,
+  q3:"What explains the overall gap?",c3:["Women mostly applied to the very competitive faculty","Faculty X is biased against men","The overall table has an arithmetic error"],a3:0,
+  e:"The faculty applied to is the lurking variable. It affects both group membership patterns and admission chances."},
+ {intro:`<p>Survival after surgery at two hospitals:</p>${tbl(["Hospital","Survived","Rate"],[["City Hospital","860 / 1000","86%"],["Rural Hospital","920 / 1000","92%"]])}`,
+  q1:"Overall, which hospital looks safer?",c1:["City","Rural"],a1:1,
+  split:`<p>Split by how sick patients were on arrival:</p>${tbl(["Condition","City","Rural"],[["Good","290 / 300 = 97%","870 / 900 = 97%"],["Poor","570 / 700 = 81%","50 / 100 = 50%"]])}`,
+  q2:"For patients in poor condition, which hospital did better?",c2:["City","Rural","Same"],a2:0,
+  q3:"What's the confounder?",c3:["Patients' condition on arrival","The number of patients","The hospital's location"],a3:0,
+  e:"City Hospital receives far more critically ill patients. Compare like with like, or adjust for condition in a model."}];
+A.reg({id:"hidden-confounder",title:"Hidden Confounder",mode:"In class",units:[["intro",[6]],["reg",[3,4]]],topics:"confounding Simpson's paradox lurking variable multivariable thinking",
+ blurb:"Solve data mysteries where adding a variable reverses the conclusion.",
+ how:"Look at the overall table first, then the split-up table. Discuss with your team why the story changes before you answer.",
+ mount(el){A.quiz(el,{id:"hidden-confounder",n:PUZ.length,gen:i=>{const p=PUZ[i];return {role:["Analyst","Sceptic","Reporter"][i%3],html:p.intro,steps:[
+  {html:`<p><strong>${p.q1}</strong></p>`,choices:p.c1,answer:p.a1,explain:"That's what the overall numbers say. Now look deeper."},
+  {html:p.split+`<p><strong>${p.q2}</strong></p>`,choices:p.c2,answer:p.a2,explain:"The comparison within groups tells a different story."},
+  {html:`<p><strong>${p.q3}</strong></p>`,...A.mc(p.c3,p.a3),explain:p.e}]}}})}});
+
+/* ---------- Model Showdown ---------- */
+A.reg({id:"model-showdown",title:"Model Showdown",mode:"After class",units:[["reg",[3,5]],["ds",[4,6]]],topics:"multiple regression model selection overfitting train test RMSE adjusted R-squared predictors",
+ blurb:"Pick predictors to build a model; it's judged on hidden test data.",
+ how:"Predict 120 students' exam marks. Train on 40 students, then test on 80 you haven't seen. Adding predictors always raises training R², but does it predict new students better?",
+ mount(el){
+  const NAMES=["Study hours/week","Attendance %","Sleep hours","Part-time work hours","Shoe size","Phone pickups/day","Favourite number","Birth month","Commute minutes","Coffee cups/day"];
+  const rows=[],y=[];
+  for(let i=0;i<120;i++){const r=[S.unif(2,20),S.unif(40,100),S.unif(5,9),S.unif(0,25),S.unif(36,46),S.unif(20,150),S.int(1,100),S.int(1,12),S.unif(5,90),S.int(0,5)];rows.push(r);y.push(20+2.2*r[0]+0.25*r[1]+1.5*r[2]-0.45*r[3]+S.norm(0,7))}
+  const tr=[...Array(40).keys()],te=[...Array(80).keys()].map(k=>k+40);
+  const fitSel=sel=>{const X=tr.map(k=>sel.map(j=>rows[k][j])),Y=tr.map(k=>y[k]);if(!sel.length){const m=S.mean(Y);return {b:[m],se:[0],r2:0,adj:0,fit:()=>m,df:39}}return ols(X,Y)};
+  const rmse=(m,sel)=>Math.sqrt(S.mean(te.map(k=>(y[k]-m.fit(sel.map(j=>rows[k][j])))**2)));
+  const bestSel=[0,1,2,3],best=rmse(fitSel(bestSel),bestSel);
+  let sel=[0],submitted=false;
+  el.innerHTML=`<section class="card"><h2>Choose predictors</h2><div class="row" id="pv"></div><div class="stats" id="st"></div><div class="scroll" id="co"></div><div class="row"><button class="btn" id="sub">Submit this model</button></div><div id="out"></div></section><div id="qz"></div>`;
+  const paint=()=>{el.querySelector("#pv").innerHTML=NAMES.map((n,j)=>`<button class="chip" data-j="${j}" aria-pressed="${sel.includes(j)}">${n}</button>`).join("");
+   const m=fitSel(sel);if(!m){el.querySelector("#st").innerHTML=`<p class="lead">That combination can't be fitted. Remove a predictor.</p>`;return}
+   el.querySelector("#st").innerHTML=`<div class="stat"><b>${f(m.r2,3)}</b><span>training R²</span></div><div class="stat"><b>${f(m.adj,3)}</b><span>adjusted R²</span></div><div class="stat"><b>${f(rmse(m,sel))}</b><span>test RMSE (marks)</span></div>`;
+   el.querySelector("#co").innerHTML=sel.length?`<table class="t"><thead><tr><th>Predictor</th><th>Coefficient</th><th>t</th><th>p</th></tr></thead><tbody>${sel.map((j,k)=>{const t=m.b[k+1]/m.se[k+1];return `<tr><td>${NAMES[j]}</td><td class="num">${f(m.b[k+1],3)}</td><td class="num">${f(t)}</td><td class="num">${S.pfmt(S.tp2(t,m.df))}</td></tr>`}).join("")}</tbody></table>`:""};
+  paint();
+  el.querySelector("#pv").addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;const j=+b.dataset.j;sel=sel.includes(j)?sel.filter(x=>x!==j):[...sel,j].sort((a,b)=>a-b);paint()});
+  el.querySelector("#sub").addEventListener("click",()=>{const m=fitSel(sel);if(!m)return;const r=rmse(m,sel),p=r<=best*1.03?30:r<=best*1.1?20:10;
+   if(!submitted){A.award("model-showdown",p,30);submitted=true}
+   el.querySelector("#out").innerHTML=`<div class="feedback ${p===30?"":"no"}"><p>Your test RMSE is ${f(r)} marks. The true model (study, attendance, sleep, work) scores ${f(best)} on this test set. ${p===30?"Excellent: you found the real signals.":"Look at which predictors have large p-values, and whether removing them improves the test error."}${submitted&&p!==30?" Keep exploring; only your first submission counts for points.":""}</p></div>`});
+  const Q=[{html:"<p>Adding “Favourite number” raised training R² slightly. Why?</p>",choices:["R² never decreases when you add a predictor, even pure noise","Favourite number really predicts marks","Training R² measures test accuracy"],explain:"Training R² can only go up. That's why we use adjusted R² or a test set."},
+   {html:"<p>What is overfitting?</p>",choices:["A model that matches training data noise and predicts new data worse","A model with too few predictors","A model with a low training R²"],explain:"An overfit model memorises quirks of the training sample."},
+   {html:"<p>The coefficient for study hours is about 2.2. What does it mean?</p>",choices:["Each extra weekly study hour adds about 2.2 marks, holding the other predictors fixed","Students study 2.2 hours on average","Study hours explain 2.2% of marks"],explain:"In multiple regression each coefficient is a change in the response with the other predictors held constant."},
+   {html:"<p>Why judge models on data they weren't trained on?</p>",choices:["It shows how well the model will predict new students","Test data are always more accurate","It makes R² bigger"],explain:"A fair evaluation uses unseen data, through a test split or cross-validation."}];
+  A.quiz(el.querySelector("#qz"),{id:"model-showdown-quiz",n:Q.length,intro:"<strong>Check your understanding.</strong>",gen:i=>({...Q[i],...A.mc(Q[i].choices,0)})});
+ }});
+
+/* ---------- Odds On ---------- */
+A.reg({id:"odds-on",title:"Odds On",mode:"After class",units:[["reg",[6]]],topics:"logistic regression odds odds ratio probability binary outcome",
+ blurb:"Use a logistic model to predict who passes, and interpret the odds.",
+ how:"The model below predicts the chance of passing a unit from weekly study hours and attendance. Explore it with the sliders, then answer the questions.",
+ mount(el){
+  const b0=-6,b1=0.35,b2=0.04,P=(h,a)=>1/(1+Math.exp(-(b0+b1*h+b2*a)));let h=8,a=75;
+  el.innerHTML=`<section class="card"><p class="num" style="font-size:.9rem">log(odds of passing) = −6 + 0.35 × hours + 0.04 × attendance%</p><div class="row between"><span class="eyebrow">Study hours/week</span><span class="num" id="hv"></span></div><input type="range" id="h" min="0" max="25" step="1" value="${h}" aria-label="Study hours"><div class="row between"><span class="eyebrow">Attendance %</span><span class="num" id="av"></span></div><input type="range" id="a" min="0" max="100" step="5" value="${a}" aria-label="Attendance"><div class="stats" id="st"></div><div id="pl"></div></section><div id="qz"></div>`;
+  const paint=()=>{const p=P(h,a);el.querySelector("#hv").textContent=h;el.querySelector("#av").textContent=a+"%";
+   el.querySelector("#st").innerHTML=`<div class="stat"><b>${f(p,3)}</b><span>P(pass)</span></div><div class="stat"><b>${f(p/(1-p))}</b><span>odds of passing</span></div><div class="stat"><b>${f(b0+b1*h+b2*a)}</b><span>log-odds</span></div>`;
+   const sx=C.scale(0,25,30,C.W-10),sy=C.scale(0,1,150,10);let d="";for(let x=0;x<=25;x+=0.25)d+=(d?"L":"M")+sx(x).toFixed(1)+" "+sy(P(x,a)).toFixed(1);
+   el.querySelector("#pl").innerHTML=C.svg(180,`<path d="${d}" fill="none" stroke="var(--mean)" stroke-width="2.5"/><circle cx="${sx(h)}" cy="${sy(p)}" r="5" fill="var(--curve)"/>`+C.yaxis(sy,30,0,1,0.25)+C.xaxis(sx,150,0,25,5,v=>v,"study hours/week"),"Probability of passing vs study hours")};
+  paint();el.querySelector("#h").addEventListener("input",e=>{h=+e.target.value;paint()});el.querySelector("#a").addEventListener("input",e=>{a=+e.target.value;paint()});
+  const Q=[{html:"<p>What is the predicted probability of passing for a student who studies 10 hours a week with 80% attendance?</p>",choices:["0.67","0.70","0.50","0.84"],explain:"Log-odds = −6 + 3.5 + 3.2 = 0.7. Probability = 1 / (1 + e^−0.7) ≈ 0.67."},
+   {html:"<p>How do the odds of passing change for each extra weekly study hour?</p>",choices:["They multiply by e^0.35 ≈ 1.42","They increase by 0.35","The probability rises by 0.35"],explain:"Exponentiate the coefficient to get the odds ratio: each hour multiplies the odds by about 1.42 (a 42% increase)."},
+   {html:"<p>A student has P(pass) = 0.8. What are their odds of passing?</p>",choices:["4 (4 to 1)","0.8","1.25"],explain:"Odds = p / (1 − p) = 0.8 / 0.2 = 4."},
+   {html:"<p>Why not use ordinary linear regression for pass/fail?</p>",choices:["It can predict probabilities below 0 or above 1","It can't handle two predictors","Logistic regression is always more accurate"],explain:"The logistic curve keeps predictions between 0 and 1 and fits the S-shape of binary outcomes."},
+   {html:"<p>Holding study hours fixed, attendance goes from 50% to 60%. What happens to the odds?</p>",choices:["They multiply by e^0.4 ≈ 1.49","They multiply by 0.4","They increase by 10%"],explain:"10 more percentage points × 0.04 = 0.4 on the log-odds scale, so odds × e^0.4 ≈ 1.49."}];
+  A.quiz(el.querySelector("#qz"),{id:"odds-on",n:Q.length,intro:"<strong>Check your understanding.</strong> Use the sliders to help.",gen:i=>({...Q[i],...A.mc(Q[i].choices,0)})});
+ }});
+
+/* ---------- Data Cleaning Escape Room ---------- */
+const MESSY=[["101","North","19","172","12"],["102","north","22","165","8"],["103","NTH","230","180","NA"],["104","South","20","1.72","15"],["104","South","20","1.72","15"],["105","North ","21","158",""],["106","South","24","176","10"]];
+const mtable=hl=>`<div class="scroll"><table class="t"><thead><tr><th>ID</th><th>Campus</th><th>Age</th><th>Height cm</th><th>Study hrs</th></tr></thead><tbody>${MESSY.map((r,i)=>`<tr>${r.map((c,j)=>`<td class="num" style="${hl(i,j)?"background:color-mix(in srgb,var(--curve) 18%,transparent);font-weight:600":""}">${c===""?"<em>(blank)</em>":A.esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`;
+const ROOMS=[
+ {hl:(i)=>i===3||i===4,q:"Room 1: Two rows are highlighted. What should you do?",c:["Remove the exact duplicate, keeping one row","Delete both rows","Average the two rows"],e:"Identical rows with the same ID are a duplicate entry. Keep one and note it in your cleaning log."},
+ {hl:(i,j)=>j===1&&i<6&&i!==3&&i!==4,q:"Room 2: The campus column has North, north, NTH and “North ”. What's the fix?",c:["Recode all variants to one label, “North”","Treat them as four different campuses","Delete rows that don't say exactly “North”"],e:"Inconsistent labels split one category into many. Trim spaces, fix case and map abbreviations."},
+ {hl:(i,j)=>i===2&&j===2,q:"Room 3: Student 103's age is 230. What should you do?",c:["Check the source; if it can't be fixed, set it to missing and record why","Replace it with the average age","Delete the whole dataset"],e:"An impossible value is likely a typo (23?). Check before changing it, and never silently replace it."},
+ {hl:(i,j)=>(i===3||i===4)&&j===3,q:"Room 4: A height of 1.72 is in a cm column. What's going on?",c:["It was entered in metres; convert to 172 cm","The student is 1.72 cm tall","Round it to 2"],e:"Mixed units are common when data come from several forms. Convert to one unit."},
+ {hl:(i,j)=>(i===2||i===5)&&j===4,q:"Room 5: Study hours shows “NA” and a blank. What's the best approach?",c:["Code both as missing and decide how to handle them, documenting the choice","Replace them with 0 hours","Delete the Study hours column"],e:"Missing isn't zero. Treat both codes the same way, then choose an approach and report it."},
+ {hl:()=>false,q:"Final door: what makes cleaning trustworthy for others?",c:["Keeping a script or log of every change","Cleaning by hand in a spreadsheet without notes","Only sharing the cleaned file"],e:"A reproducible record lets others check your decisions. Door unlocked: you've escaped."}];
+A.reg({id:"data-cleaning-escape",title:"Data Cleaning Escape Room",mode:"Both",units:[["ds",[1,2]]],topics:"data cleaning wrangling duplicates missing values units categories data science workflow",
+ blurb:"Fix a messy dataset, one problem per locked door.",
+ how:"Each door hides one data problem, highlighted in the table. Choose the right fix to unlock it. Work as a team and share clues.",
+ mount(el){A.quiz(el,{id:"data-cleaning-escape",n:ROOMS.length,gen:i=>{const r=ROOMS[i];return {role:["Navigator","Lock-picker","Note-taker"][i%3],html:mtable(r.hl)+`<p style="margin-top:8px"><strong>${r.q}</strong></p>`,...A.mc(r.c,0),explain:r.e+(i<ROOMS.length-1?` Door ${i+1} unlocked.`:"")}}})}});
+
+/* ---------- Chart Makeover ---------- */
+const CH=[
+ ()=>{const v=[50,52,55],sy=C.scale(48,56,150,14),bw=80;let s=v.map((x,i)=>`<rect x="${60+i*100}" y="${sy(x)}" width="${bw}" height="${150-sy(x)}" fill="var(--mean)"/><text class="axis" x="${100+i*100}" y="166" text-anchor="middle">${["Café A","Café B","Café C"][i]}</text>`).join("")+C.yaxis(sy,50,48,56,2);
+  return {svg:C.svg(176,s,"Bar chart"),q:"Café ratings (out of 100). What's misleading?",c:["The y-axis starts at 48, exaggerating small differences","The bars are the wrong colour","There should be more cafés"],e:"Bar lengths must start at zero; otherwise Café C looks several times better than A when it's only 5 points higher."}},
+ ()=>{const yrs=["2015","2016","2020","2024"],v=[10,12,20,30],sx=i=>60+i*90,sy=C.scale(0,32,150,14);let s=`<path d="${v.map((x,i)=>(i?"L":"M")+sx(i)+" "+sy(x)).join("")}" fill="none" stroke="var(--mean)" stroke-width="2.5"/>`+v.map((x,i)=>`<circle cx="${sx(i)}" cy="${sy(x)}" r="4" fill="var(--mean)"/><text class="axis" x="${sx(i)}" y="166" text-anchor="middle">${yrs[i]}</text>`).join("")+C.yaxis(sy,40,0,30,10);
+  return {svg:C.svg(176,s,"Line chart"),q:"Enrolments over time. What's misleading?",c:["The years are evenly spaced but the gaps are 1, 4 and 4 years","The line should be a bar chart","The y-axis starts at 0"],e:"Unequal time gaps drawn as equal distances distort the growth rate. Space the x-axis by actual time."}},
+ ()=>{const sy=C.scale(0,400,150,14),cum=[80,150,210,260,300,330];let s=`<path d="${cum.map((x,i)=>(i?"L":"M")+(50+i*55)+" "+sy(x)).join("")}" fill="none" stroke="var(--mean)" stroke-width="2.5"/>`+cum.map((x,i)=>`<text class="axis" x="${50+i*55}" y="166" text-anchor="middle">M${i+1}</text>`).join("")+C.yaxis(sy,40,0,400,100);
+  return {svg:C.svg(176,s,"Cumulative sales"),q:"“Sales keep rising!” says the report. What's hidden?",c:["It's a cumulative total, which hides that monthly sales are falling","Nothing, sales are rising","The months are mislabelled"],e:"Monthly sales were 80, 70, 60, 50, 40, 30. A cumulative chart always rises, so it hides the decline."}},
+ ()=>{let s=`<circle cx="100" cy="90" r="25" fill="var(--pop)"/><text class="axis" x="100" y="160" text-anchor="middle">2023: 100 users</text><circle cx="250" cy="90" r="50" fill="var(--pop)"/><text class="axis" x="250" y="160" text-anchor="middle">2024: 200 users</text>`;
+  return {svg:C.svg(170,s,"Bubble chart"),q:"Users doubled. What's misleading about the circles?",c:["The radius doubled, so the area is 4 times bigger","Circles should be squares","The colours are the same"],e:"Readers judge area. Doubling the radius quadruples the area, overstating growth. Scale area to the value, or use bars."}},
+ ()=>{const sy=C.scale(60,80,150,14),v=[62,64,68,73,77];let s=`<path d="${v.map((x,i)=>(i?"L":"M")+(60+i*60)+" "+sy(x)).join("")}" fill="none" stroke="var(--mean)" stroke-width="2.5"/>`+v.map((x,i)=>`<text class="axis" x="${60+i*60}" y="166" text-anchor="middle">Wk ${i+1}</text>`).join("")+C.yaxis(sy,40,60,80,5);
+  return {svg:C.svg(176,s,"Line chart"),q:"“Satisfaction is soaring!” It shows 5 weeks after a 2-year decline. What's the issue?",c:["Cherry-picked time window","The y-axis is too wide","Weeks should be days"],e:"Choosing a short window can make any trend look good. Show the full history so readers see the context."}}];
+A.reg({id:"chart-makeover",title:"Chart Makeover",mode:"After class",units:[["ds",[3]],["intro",[1]]],topics:"data visualisation misleading graphs axis scale communication",
+ blurb:"Find what's wrong with a misleading chart and learn how to fix it.",
+ how:"Each chart tells a misleading story. Spot the trick, then read how to redesign it honestly. Share your best redesign idea with the class.",
+ mount(el){const order=S.shuffle(CH);A.quiz(el,{id:"chart-makeover",n:order.length,gen:i=>{const c=order[i]();return {html:c.svg+`<p><strong>${c.q}</strong></p>`,...A.mc(c.c,0),explain:c.e}}})}});
+
+/* ---------- Classifier Arena ---------- */
+A.reg({id:"classifier-arena",title:"Classifier Arena",mode:"Both",units:[["ds",[5]]],topics:"classification k-nearest neighbours k-means clustering accuracy overfitting machine learning",
+ blurb:"Tune k-nearest neighbours and k-means and see what happens to accuracy.",
+ how:"Part 1: classify students as likely to finish a degree (blue) or not (pink) using k-nearest neighbours. Compare training and test accuracy as k changes. Part 2: group unlabelled data with k-means.",
+ mount(el){
+  const gen=n=>Array.from({length:n},()=>{const c=S.r()<0.5?1:0;const x=c?S.norm(6,1.6):S.norm(4,1.6),y=c?S.norm(6,1.6):S.norm(4,1.6);return {x,y,c}});
+  const train=gen(80),test=gen(80);let k=1,K=3;
+  const blobs=[[2.5,3],[7,3],[5,7.5]].flatMap(([cx,cy])=>Array.from({length:30},()=>({x:S.norm(cx,0.9),y:S.norm(cy,0.9)})));
+  el.innerHTML=`<section class="card"><h2>Part 1 · k-nearest neighbours</h2><div class="row"><span class="eyebrow">k</span><div class="seg" id="ks"></div></div><div id="kp"></div><div class="stats" id="ka"></div></section>
+   <section class="card"><h2>Part 2 · k-means clustering</h2><div class="row"><span class="eyebrow">Clusters K</span><div class="seg" id="Ks"></div></div><div id="mp"></div><div id="el"></div></section><div id="qz"></div>`;
+  const pred=(p,K_)=>{const d=train.map(t=>({d:(t.x-p.x)**2+(t.y-p.y)**2,c:t.c})).sort((a,b)=>a.d-b.d).slice(0,K_);return d.filter(z=>z.c).length*2>K_?1:0};
+  const acc=(set,K_,self)=>set.filter(p=>{if(!self)return pred(p,K_)===p.c;const d=train.filter(t=>t!==p).map(t=>({d:(t.x-p.x)**2+(t.y-p.y)**2,c:t.c}));d.push({d:0,c:p.c});d.sort((a,b)=>a.d-b.d);return (d.slice(0,K_).filter(z=>z.c).length*2>K_?1:0)===p.c}).length/set.length;
+  const sx=C.scale(0,10,10,C.W-10),sy=C.scale(0,10,190,10);
+  const paintK=()=>{el.querySelector("#ks").innerHTML=[1,3,7,15,31].map(v=>`<button data-k="${v}" aria-pressed="${k===v}">${v}</button>`).join("");
+   let s="";for(let gx=0;gx<20;gx++)for(let gy=0;gy<20;gy++){const p={x:gx*0.5+0.25,y:gy*0.5+0.25};s+=`<rect x="${sx(gx*0.5)}" y="${sy(gy*0.5+0.5)}" width="${sx(0.5)-sx(0)+0.5}" height="${sy(0)-sy(0.5)+0.5}" fill="${pred(p,k)?"var(--t1)":"var(--t2)"}" opacity=".13"/>`}
+   s+=train.map(p=>`<circle cx="${sx(p.x)}" cy="${sy(p.y)}" r="3.5" fill="${p.c?"var(--t1)":"var(--t2)"}"/>`).join("");
+   el.querySelector("#kp").innerHTML=C.svg(200,s,"kNN decision regions");
+   el.querySelector("#ka").innerHTML=`<div class="stat"><b>${Math.round(acc(train,k,true)*100)}%</b><span>training accuracy</span></div><div class="stat"><b>${Math.round(acc(test,k)*100)}%</b><span>test accuracy</span></div><div class="stat"><b>${k}</b><span>neighbours voting</span></div>`};
+  const kmeans=K_=>{let cen=S.shuffle(blobs).slice(0,K_).map(p=>({x:p.x,y:p.y})),lab=[];for(let it=0;it<25;it++){lab=blobs.map(p=>{let b=0,bd=1e9;cen.forEach((c,j)=>{const d=(c.x-p.x)**2+(c.y-p.y)**2;if(d<bd){bd=d;b=j}});return b});cen=cen.map((c,j)=>{const m=blobs.filter((_,i)=>lab[i]===j);return m.length?{x:S.mean(m.map(p=>p.x)),y:S.mean(m.map(p=>p.y))}:c})}
+   const wss=blobs.reduce((s,p,i)=>s+(p.x-cen[lab[i]].x)**2+(p.y-cen[lab[i]].y)**2,0);return {cen,lab,wss}};
+  const cols=["var(--t1)","var(--t2)","var(--t3)","var(--t4)","var(--ink)"];
+  const wssAll=[1,2,3,4,5].map(K_=>Math.min(...[0,1,2,3,4].map(()=>kmeans(K_).wss)));
+  const paintM=()=>{el.querySelector("#Ks").innerHTML=[2,3,4,5].map(v=>`<button data-K="${v}" aria-pressed="${K===v}">${v}</button>`).join("");
+   const r=kmeans(K);let s=blobs.map((p,i)=>`<circle cx="${sx(p.x)}" cy="${sy(p.y)}" r="3.5" fill="${cols[r.lab[i]]}"/>`).join("")+r.cen.map(c=>`<path d="M${sx(c.x)-6} ${sy(c.y)-6}L${sx(c.x)+6} ${sy(c.y)+6}M${sx(c.x)+6} ${sy(c.y)-6}L${sx(c.x)-6} ${sy(c.y)+6}" stroke="var(--ink)" stroke-width="2.5"/>`).join("");
+   el.querySelector("#mp").innerHTML=C.svg(200,s,"k-means clusters");
+   el.querySelector("#el").innerHTML=`<p class="lead" style="font-size:.85rem">Within-cluster spread for K = 1 to 5. Look for the “elbow” where adding clusters stops helping much.</p>`+C.bars(["1","2","3","4","5"],wssAll,{label:"Within-cluster sum of squares",colors:wssAll.map((_,i)=>i+1===K?"var(--curve)":"var(--mean)")})};
+  paintK();paintM();
+  el.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;if(b.dataset.k){k=+b.dataset.k;paintK()}if(b.dataset.K){K=+b.dataset.K;paintM()}});
+  const Q=[{html:"<p>With k = 1, training accuracy is 100%. Why isn't that impressive?</p>",choices:["Each training point is its own nearest neighbour, so it memorises the data","k = 1 is always the best model","The test set is too small"],explain:"k = 1 overfits: jagged regions fit the training noise. Test accuracy is the honest measure."},
+   {html:"<p>What happens as k gets very large (e.g. 31)?</p>",choices:["Boundaries get smoother; too large and the model underfits","The model always gets more accurate","Training accuracy reaches 100%"],explain:"Large k averages over many neighbours, smoothing boundaries. Too large and it misses real structure."},
+   {html:"<p>For k-means here, which K does the elbow suggest?</p>",choices:["3","5","1"],explain:"The within-cluster spread drops sharply up to K = 3, then flattens. The data were generated from 3 groups."},
+   {html:"<p>How does k-means differ from k-nearest neighbours?</p>",choices:["k-means finds groups in unlabelled data; kNN predicts known labels","They are the same method","k-means needs labelled training data"],explain:"kNN is supervised classification; k-means is unsupervised clustering."}];
+  A.quiz(el.querySelector("#qz"),{id:"classifier-arena",n:Q.length,intro:"<strong>Check your understanding</strong> after trying different k and K values.",gen:i=>({...Q[i],...A.mc(Q[i].choices,0)})});
+ }});
+
+/* ---------- Fair Algorithm Council ---------- */
+const FAIR=[
+ {s:`<p>A bank's loan model approves applicants as follows. Both groups repay at the same rate when given loans.</p>${tbl(["Group","Applicants","Approved"],[["Group A","1,000","60%"],["Group B","1,000","35%"]])}`,q:"What concern should the council raise first?",c:["A large gap in approval rates between groups with equal repayment","The model is too accurate","Group B applied less often"],e:"Unequal approval rates for equally creditworthy groups (a demographic parity gap) suggest the model disadvantages Group B."},
+ {s:`<p>Among people who <strong>would have repaid</strong> a loan:</p>${tbl(["Group","Wrongly rejected"],[["Group A","10%"],["Group B","30%"]])}`,q:"Which fairness measure is violated?",c:["Equal opportunity: false negative rates differ","Overall accuracy","Approval rates are equal"],e:"Good applicants in Group B are three times as likely to be wrongly rejected. Equal opportunity asks these error rates to match."},
+ {s:"<p>The model doesn't use ethnicity, but it does use postcode, which is strongly linked to ethnicity in this city.</p>",q:"What's the council's best response?",c:["Treat postcode as a possible proxy, audit outcomes by group, and test the model without it","Nothing: ethnicity isn't in the model","Add ethnicity to make it more accurate"],e:"Removing a sensitive variable isn't enough when a proxy carries the same information. Audit the outcomes."},
+ {s:"<p>A university wants to share students' grades and wellbeing survey answers with a tech company to build a dropout-prediction app.</p>",q:"What must happen first?",c:["Informed consent or a lawful basis, de-identification, and limits on how the data can be used","Nothing, if the app helps students","Share it all, then ask for consent later"],e:"Privacy law and ethics require a lawful purpose, minimal and de-identified data, and clear limits on reuse."},
+ {s:`<p>A model's overall accuracy is 90%.</p>${tbl(["Subgroup","Share of data","Accuracy"],[["Majority","90%","93%"],["Minority","10%","63%"]])}`,q:"What does this show?",c:["High overall accuracy can hide poor performance for smaller groups","The model is fair because it's 90% accurate","The minority group should be removed"],e:"Always evaluate by subgroup. The overall number is dominated by the larger group."}];
+A.reg({id:"fair-algorithm-council",title:"Fair Algorithm Council",mode:"In class",units:[["ds",[6]]],topics:"ethics fairness bias privacy algorithm confusion matrix accountability",
+ blurb:"Role-play a council judging an algorithm for bias and privacy.",
+ how:"Your team is the council. Each case, a different member takes the lead role and argues from that view before the team decides.",
+ mount(el){A.quiz(el,{id:"fair-algorithm-council",n:FAIR.length,gen:i=>{const c=FAIR[i];return {role:["Applicant advocate","Data scientist","Regulator","Bank manager","Student rep"][i],html:c.s+`<p style="margin-top:8px"><strong>${c.q}</strong></p>`,...A.mc(c.c,0),explain:c.e}}})}});
+})();
+
+APP.start();
+if("serviceWorker" in navigator&&location.protocol==="https:")window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}));
+</script>
+</body>
+</html>

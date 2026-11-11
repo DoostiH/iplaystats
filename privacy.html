@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy · iPlayStats</title>
+<meta name="theme-color" content="#2B55E0">
+<link rel="icon" href="icons/icon-192.png">
+<script src="config.js"></script>
+<style>
+:root{--bg:#EEF2F5;--panel:#FFFFFF;--ink:#11212C;--muted:#5A6B77;--line:#D3DCE3;--accent:#2B55E0;color-scheme:light}
+@media (prefers-color-scheme: dark){:root{--bg:#0D161D;--panel:#15212A;--ink:#E7EEF3;--muted:#93A4B1;--line:#283844;--accent:#7C9BFF;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+main{max-width:680px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+h1{font:800 1.8rem/1.1 "Bricolage Grotesque","Segoe UI",system-ui,sans-serif;margin:0 0 6px}
+h2{font:600 1.1rem/1.3 "Bricolage Grotesque","Segoe UI",system-ui,sans-serif;margin:22px 0 6px}
+p,li{color:var(--ink)}ul{padding-left:20px}
+.muted{color:var(--muted);font-size:.9rem}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<p class="muted"><a href="index.html">← Back to the games</a></p>
+<h1>Privacy</h1>
+<p class="muted">iPlayStats free beta · last updated 11 November 2026</p>
+
+<p>iPlayStats is a free set of statistics games for university students and teachers. You can use every game without an account, and we don't collect your name, email or any other personal details through the app.</p>
+
+<h2>What stays on your device</h2>
+<p>To remember your progress, the app saves a few things in your browser's local storage on your own phone or computer:</p>
+<ul>
+<li>a random nickname (for example “Curious Quokka”) and the team you pick</li>
+<li>your best score in each game</li>
+<li>your answers to the class polls and your predictions</li>
+<li>simple settings, such as the last unit filter you chose</li>
+</ul>
+<p>This information is not sent to us. You can delete it at any time by clearing this site's data in your browser settings.</p>
+
+<h2>What other services see</h2>
+<ul>
+<li><strong>Website hosting.</strong> Like any website, the hosting service receives standard technical information when you load the app, such as your IP address and browser type, and may keep short-term logs for security and reliability.</li>
+<li><strong>Fonts.</strong> The app loads its fonts from Google Fonts, so Google receives your IP address when the fonts are downloaded.</li>
+<li><strong>Feedback form.</strong> If you choose to send feedback, the form service processes what you type. Please don't include sensitive personal information.</li>
+</ul>
+<p>The app has no advertising, no analytics trackers and no tracking cookies.</p>
+
+<h2>Changes</h2>
+<p>Future versions may add optional accounts, class codes or live class sessions. If that changes what information is collected, this page will be updated before those features go live, and you'll be told what's collected and why.</p>
+
+<h2>Contact</h2>
+<p id="contact">Questions about privacy? Use the feedback link in the app.</p>
+</main>
+<script>
+(function(){var c=window.SS_CONFIG||{},el=document.getElementById("contact");
+ if(c.contactEmail){el.textContent="Questions about privacy? Email ";var s=document.createElement("span");s.style.userSelect="all";s.style.fontWeight="600";s.textContent=c.contactEmail;el.appendChild(s);el.appendChild(document.createTextNode("."))}})();
+</script>
+</body>
+</html>

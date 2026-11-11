@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>About · iPlayStats</title>
+<meta name="theme-color" content="#2B55E0">
+<link rel="icon" href="icons/icon-192.png">
+<script src="config.js"></script>
+<style>
+:root{--bg:#EEF2F5;--panel:#FFFFFF;--ink:#11212C;--muted:#5A6B77;--line:#D3DCE3;--accent:#2B55E0;--soft:#E4EAF0;color-scheme:light}
+@media (prefers-color-scheme: dark){:root{--bg:#0D161D;--panel:#15212A;--ink:#E7EEF3;--muted:#93A4B1;--line:#283844;--accent:#7C9BFF;--soft:#1C2A35;color-scheme:dark}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 "IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+main{max-width:680px;margin:0 auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px 22px}
+h1{font:800 1.8rem/1.1 "Bricolage Grotesque","Segoe UI",system-ui,sans-serif;margin:0 0 6px}
+h2{font:600 1.1rem/1.3 "Bricolage Grotesque","Segoe UI",system-ui,sans-serif;margin:22px 0 6px}
+ul{padding-left:20px}
+.muted{color:var(--muted);font-size:.9rem}
+.terms{background:var(--soft);border-radius:10px;padding:10px 14px;font-size:.92rem}
+.btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;border-radius:10px;padding:10px 16px;margin-top:6px}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+<p class="muted"><a href="index.html">← Back to the games</a></p>
+<h1>About iPlayStats</h1>
+<p class="muted" id="ver">Free beta</p>
+
+<p>iPlayStats is a set of short games for learning statistics and data science at university. It's built for two things at once: helping students understand the ideas behind the tests, and helping a class feel like a team while they learn.</p>
+<p>The games cover introductory statistics, probability, inference, regression, data science and a basic applied statistics unit. Topics follow international curriculum guidelines for statistics and data science.</p>
+
+<h2>Created by</h2>
+<p id="owner"></p>
+
+<h2>Thank you to our contributors</h2>
+<div id="people"><p class="muted">Contributors who share feedback or game ideas will be thanked here.</p></div>
+
+<h2>Suggest a game or send feedback</h2>
+<p>Teachers and students are welcome to suggest new games, report problems or share how you used iPlayStats in class.</p>
+<p class="terms">By sending an idea or feedback, you agree that it can be used, adapted and included in iPlayStats, including future paid versions, without payment. If you'd like to be thanked, include your name and we'll list your name only, with your permission.</p>
+<div id="fb"></div>
+
+<h2>Copyright</h2>
+<p id="copy"></p>
+<p class="muted">You may use iPlayStats free of charge for learning and teaching. Copying, modifying, hosting or selling the app or its content requires written permission.</p>
+</main>
+<script>
+(function(){
+ var c=window.SS_CONFIG||{},$=function(id){return document.getElementById(id)};
+ var owner=c.owner||"the iPlayStats team";
+ $("ver").textContent="Free beta "+(c.version||"");
+ $("owner").textContent=owner+", statistician and educator.";
+ $("copy").textContent="© 2026 "+owner+". All rights reserved.";
+ if(c.contributors&&c.contributors.length){var ul=document.createElement("ul");c.contributors.forEach(function(n){var li=document.createElement("li");li.textContent=n;ul.appendChild(li)});$("people").innerHTML="";$("people").appendChild(ul)}
+ var fb=$("fb");
+ if(c.feedbackUrl){var a=document.createElement("a");a.className="btn";a.href=c.feedbackUrl;a.target="_blank";a.rel="noopener";a.textContent="Open the feedback form";fb.appendChild(a)}
+ if(c.contactEmail){var p=document.createElement("p");p.textContent="Or email ";var s=document.createElement("span");s.style.userSelect="all";s.style.fontWeight="600";s.textContent=c.contactEmail;p.appendChild(s);fb.appendChild(p)}
+})();
+</script>
+</body>
+</html>
