@@ -9,5 +9,5 @@ window.SS_CONFIG = {
   /* People to thank on the About page. Add names only, and only with their permission, e.g.
      contributors: ["Jane Citizen (game idea: ...)", "Sam Lee (feedback)"], */
   contributors: [],
-  version: "v0.1"
+  version: "v0.2"
 };

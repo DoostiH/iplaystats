@@ -246,10 +246,16 @@ A.statusText = () => ({connecting:"Connecting to the class pool…",
   stale:"The class pool hasn't answered yet. Your results are saved on this device.",
   local:"Solo mode: your best scores are saved on this device only."})[A.pool.state];
 
+/* ---------- hints ---------- */
+A.curHints=[];
+A.hintUI=(box,penalty,onUse)=>{const hs=A.curHints||[];if(!hs.length)return;let k=0;
+  const wrap=A.h("div",{class:"hintwrap",style:"display:flex;flex-direction:column;gap:8px"},`<button class="btn ghost hintbtn" type="button" style="align-self:flex-start">Show a hint${penalty?" (half points for this question)":""}</button><div class="hints"></div>`);
+  box.appendChild(wrap);const btn=wrap.querySelector(".hintbtn"),list=wrap.querySelector(".hints");
+  btn.addEventListener("click",()=>{if(k>=hs.length)return;if(k===0&&onUse)onUse();list.insertAdjacentHTML("beforeend",`<p class="hint" style="background:var(--mean-soft);color:var(--ink);border-radius:10px;padding:8px 12px;font-size:.92rem"><strong>Hint ${k+1}:</strong> ${A.esc(hs[k])}</p>`);k++;btn.textContent=k<hs.length?"Another hint":"No more hints";if(k>=hs.length)btn.disabled=true})};
 /* ---------- quiz engine ---------- */
 /* cfg: {id, intro, n, gen(i) -> {role?, html, choices[], answer, explain, after?}, points=10} */
 A.quiz = (el,cfg) => {
-  const pts=cfg.points||10;let i=0,score=0,res=[],q=null,step=0;
+  const pts=cfg.points||10;let hinted=false,i=0,score=0,res=[],q=null,step=0;
   const box=A.h("div",{class:"card"});el.appendChild(box);
   const start=()=>{i=0;score=0;res=[];next()};
   const next=()=>{q=cfg.gen(i);step=0;draw()};
@@ -261,12 +267,14 @@ A.quiz = (el,cfg) => {
       (step===0&&q.html?`<div class="stem">${q.html}</div>`:"")+(s.html&&q.steps?`<div class="stem">${s.html}</div>`:"")+
       `<div class="choices">${s.choices.map((c,k)=>`<button class="choice" data-k="${k}">${c}</button>`).join("")}</div><div class="fb"></div>`;
     box.querySelectorAll(".choice").forEach(b=>b.addEventListener("click",()=>answer(+b.dataset.k)));
+    hinted=false;A.hintUI(box.querySelector(".fb").parentNode.insertBefore(A.h("div"),box.querySelector(".fb")),true,()=>{hinted=true});
   }
   function answer(k){
     const s=cur(),ok=k===s.answer;
     box.querySelectorAll(".choice").forEach((b,j)=>{b.disabled=true;if(j===s.answer)b.classList.add("right");else if(j===k)b.classList.add("wrong")});
     const last=!q.steps||step===q.steps.length-1;
-    if(ok)score+=q.steps?Math.round(pts/q.steps.length):pts;
+    const hw=box.querySelector(".hintwrap .hintbtn");if(hw)hw.disabled=true;
+    if(ok)score+=Math.round((q.steps?pts/q.steps.length:pts)*(hinted?0.5:1));
     const fb=box.querySelector(".fb");
     fb.innerHTML=`<div class="feedback ${ok?"":"no"}"><p><strong>${ok?"Correct.":"Not quite."}</strong> ${s.explain||""}</p></div><div class="row" style="margin-top:10px"><button class="btn" id="qn">${last?(i===cfg.n-1?"See results":"Next"):"Continue"}</button></div>`;
     if(q.steps&&!ok)q._miss=true;
@@ -288,7 +296,7 @@ A.rounds = (el,cfg) => { /* cfg: {id,n,max,render(box,api)} api:{round,add(point
   let r=0,score=0;const box=A.h("div",{class:"card"});el.appendChild(box);
   const api={get round(){return r},add:p=>{score+=p},get score(){return score},
     next:()=>{r++;if(r<cfg.n)paint();else{const max=cfg.n*cfg.max;A.award(cfg.id,Math.round(score),max);box.innerHTML=`<h2>${Math.round(score)} / ${max} points</h2><p class="lead">${score>=max*0.8?"Excellent work.":"Play again to sharpen your eye."}</p><div class="row"><button class="btn" id="again">Play again</button></div>`;box.querySelector("#again").addEventListener("click",()=>{r=0;score=0;paint()})}}};
-  const paint=()=>{box.innerHTML=`<div class="row between"><span class="eyebrow">Round ${r+1} of ${cfg.n}</span><span class="num lead">${Math.round(score)} pts</span></div><div class="body" style="display:flex;flex-direction:column;gap:12px"></div>`;cfg.render(box.querySelector(".body"),api)};
+  const paint=()=>{box.innerHTML=`<div class="row between"><span class="eyebrow">Round ${r+1} of ${cfg.n}</span><span class="num lead">${Math.round(score)} pts</span></div><div class="body" style="display:flex;flex-direction:column;gap:12px"></div><div class="hb"></div>`;cfg.render(box.querySelector(".body"),api);A.hintUI(box.querySelector(".hb"),false)};
   paint();
 };
 A.mc = (choices,answer) => { /* shuffle choices keeping answer */ const idx=S.shuffle(choices.map((_,k)=>k));return {choices:idx.map(k=>choices[k]),answer:idx.indexOf(answer)} };
@@ -344,11 +352,14 @@ function renderTests(){
 function renderGame(g){
   view="game";
   app.innerHTML=`<div class="topbar"><button class="back" id="back">← Games</button><span class="eyebrow">${g.mode}</span></div>
-  <header style="display:flex;flex-direction:column;gap:8px"><h1 style="font-size:1.9rem">${A.esc(g.title)}</h1><div class="row">${unitTags(g)}</div><p class="lead">${A.esc(g.how)}</p></header>
+  <header style="display:flex;flex-direction:column;gap:8px"><h1 style="font-size:1.9rem">${A.esc(g.title)}</h1><div class="row">${unitTags(g)}</div></header>
+  ${(()=>{const hp=A.HELP&&A.HELP[g.id];const seen=store.get("seen."+g.id,false);store.set("seen."+g.id,true);
+    return `<details class="card howto" ${seen?"":"open"}><summary style="cursor:pointer;font-family:var(--display);font-weight:600;font-size:1.05rem">How to play</summary><p>${A.esc(g.how)}</p>${hp?`<ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px">${hp.steps.map(x=>`<li>${A.esc(x)}</li>`).join("")}</ol>`:""}<p class="lead" style="font-size:.85rem">Stuck? Tap <strong>Show a hint</strong> during the game.</p></details>`})()}
   ${!A.me.team?`<p class="lead" style="font-size:.85rem">Tip: pick a team on the home screen so your points count for your team.</p>`:""}
   <div id="stage" style="display:flex;flex-direction:column;gap:16px"></div>`;
   app.querySelector("#back").addEventListener("click",()=>{location.hash="home"});
-  try{cleanup=g.mount(app.querySelector("#stage"))||null}catch(e){app.querySelector("#stage").innerHTML=`<p class="lead">This game hit a problem loading. Go back and try again.</p>`;console.error(e)}
+  A.curHints=(A.HELP&&A.HELP[g.id]&&A.HELP[g.id].hints)||[];
+  try{cleanup=g.mount(app.querySelector("#stage"))||null;const st=app.querySelector("#stage");if(!st.querySelector(".hintwrap")){const c=A.h("section",{class:"card"});st.appendChild(c);A.hintUI(c,false)}}catch(e){app.querySelector("#stage").innerHTML=`<p class="lead">This game hit a problem loading. Go back and try again.</p>`;console.error(e)}
 }
 function route(){
   if(cleanup){try{cleanup()}catch(e){}cleanup=null}
@@ -359,6 +370,56 @@ function route(){
 }
 A.onPool(()=>{if(view==="home")renderHome()});
 A.start = () => {window.addEventListener("hashchange",route);route();connect()};
+})();
+/* ================= How to play + hints ================= */
+(function(){
+const H={
+ "bias-detective":{steps:["Read the case: a study or survey someone ran.","Answer three questions: what kind of study it is, what the main problem is, and which fix helps most.","Each correct step earns points. Discuss with your team before you tap."],
+  hints:["Experiment = researchers assign the treatment at random. Otherwise it's observational.","Ask: who could never be picked, or who chose to take part? That's usually where the bias is.","A bigger sample doesn't fix a biased way of choosing people."]},
+ "outlier-effect":{steps:["Look at the dot plot of nine commute times. The pink dot is the one you can move.","Read the question and choose your prediction first.","Then drag the slider to move the pink dot and watch the mean, median, SD and IQR change."],
+  hints:["The mean uses every value, so one extreme value pulls it.","The median and IQR only use the middle of the data.","For a target mean: total = mean × number of values."]},
+ "z-score-race":{steps:["Two athletes compete in different events, so their raw results can't be compared directly.","Work out each athlete's z-score: (result − mean) ÷ SD.","Pick the athlete with the more exceptional performance."],
+  hints:["z = (result − mean) ÷ SD.","For running times, lower is better, so flip the sign.","Bigger z = more exceptional compared with their own field."]},
+ "correlation-sniper":{steps:["Look at the scatterplot.","Drag the slider to your guess of the correlation r (from −1 to 1), then tap Fire.","Then decide whether the relationship shows cause and effect."],
+  hints:["Points close to a straight line mean r is near 1 or −1.","A cloud with no direction means r is near 0.","Only a randomised experiment supports cause and effect."]},
+ "fair-or-rigged":{steps:["Each round you get a die that might be fair or might favour one face.","Tap Roll 10, 50 or 200 as often as you like and watch the bars.","When you're confident, tap It's fair or It's rigged."],
+  hints:["A fair die gives each face about 1/6 (the red line) in the long run.","With few rolls, big differences happen by chance.","After 30+ rolls, a small p-value is evidence the die isn't fair."]},
+ "diagnosis-dilemma":{steps:["A patient tests positive.","Use the disease rate, sensitivity and specificity to find the chance they really have the disease.","Pick the closest answer. The explanation shows the working."],
+  hints:["Imagine 10,000 people. How many have the disease?","Count true positives (sick and positive) and false positives (healthy and positive).","Answer = true positives ÷ all positives."]},
+ "risky-business":{steps:["Each round is a money decision: insurance, a raffle, a game show or an investment.","Calculate the expected value (and risk, if asked).","Choose the best answer."],
+  hints:["Expected value = sum of (value × probability).","Subtract what you pay to play.","Same average but bigger SD = more risk."]},
+ "distribution-match":{steps:["Read the real-life situation.","First choose the model that fits: binomial, Poisson or normal.","Then choose the correct probability."],
+  hints:["Binomial: fixed number of yes/no trials with the same chance each time.","Poisson: counts of events at an average rate per time or space.","Normal: continuous measurements with a bell-shaped spread; use z-scores."]},
+ "sample-machine":{steps:["Pick a sample size (n = 5, 15 or 30).","Tap Draw to take a random sample of wait times. Your sample mean joins the class picture.","Draw several times, or add simulated classmates, and watch the shape of the means."],
+  hints:["Single wait times are skewed, but averages of many waits are not.","Larger n makes the pile of means narrower.","The spread of the means should be close to σ/√n."]},
+ "interval-hunters":{steps:["Choose a confidence level and a method.","Tap Build my interval, or Add 20 classmates. Green intervals capture the true mean; red ones miss.","Then tap Start to answer the questions."],
+  hints:["About 95% of 95% intervals capture the true mean.","Higher confidence = wider intervals.","Bigger samples = narrower intervals."]},
+ "courtroom-p-value":{steps:["The null hypothesis is on trial, presumed innocent.","Step 1: choose the correct H₀. Step 2: reach a verdict from the p-value. Step 3: name the error, if any.","Rotate roles in your team: prosecutor, jury, defence."],
+  hints:["H₀ is about a population parameter (μ or p), never the sample result.","Reject H₀ only when p < α.","Type I = rejecting a true H₀. Type II = missing a false H₀."]},
+ "which-test-quest":{steps:["Read the research question.","Decide: what type of outcome, how many groups, paired or independent, assumptions met?","Choose the best test."],
+  hints:["Numbers → t-test or ANOVA. Categories → proportion or chi-square test.","Same people measured twice → paired.","Skewed small samples → a nonparametric test. See the Test finder on the home screen."]},
+ "class-poll-showdown":{steps:["Vote in both polls (once each).","Watch the bars and the test results update as votes come in. Add simulated votes if you're playing alone.","Tap Start to answer the questions."],
+  hints:["One yes/no question vs a claimed % → one-sample proportion test.","Several categories vs equal shares → chi-square goodness-of-fit.","Small p-value = the data disagree with the claim."]},
+ "experiment-lab":{steps:["Choose how many plants per group.","Tap Grow to run the experiment.","Read the interaction plot and ANOVA table, then decide whether there's an interaction."],
+  hints:["Parallel lines in the plot = no interaction.","Look at the p-value on the Fertiliser × Light row.","More plants per group = more power to detect real effects."]},
+ "line-fit-challenge":{steps:["Move the intercept and slope sliders to fit the best line you can.","Tap Lock in to compare your line with least squares (dashed).","Then read the residual plot and choose what it shows."],
+  hints:["Get the slope right first, then shift the line up or down.","A smaller sum of squared residuals is better.","Residual plot: random scatter = good; a curve or one far point = problem."]},
+ "hidden-confounder":{steps:["Look at the overall table and answer.","Then look at the table split by a third variable.","Explain why the story changes."],
+  hints:["Compare rates (%), not counts.","Ask which group got the harder cases.","When the overall result reverses within groups, it's Simpson's paradox."]},
+ "model-showdown":{steps:["Tap predictors on or off to build a model.","Watch training R², adjusted R² and test RMSE (lower is better).","Tap Submit this model when you're happy. Only your first submission counts."],
+  hints:["Training R² always goes up when you add predictors, even useless ones.","Large p-values suggest a predictor isn't helping.","Judge by test RMSE: it shows how well you predict new students."]},
+ "odds-on":{steps:["Move the sliders to explore the model.","Watch the probability, odds and log-odds change.","Tap Start to answer the questions."],
+  hints:["Probability = 1 ÷ (1 + e^(−log-odds)).","Odds = p ÷ (1 − p).","Each coefficient b multiplies the odds by e^b."]},
+ "data-cleaning-escape":{steps:["Each door hides one data problem, highlighted in the table.","Choose the right fix to unlock the door.","Escape through all six doors."],
+  hints:["Look for repeated rows, odd spellings, impossible values and mixed units.","Missing isn't the same as zero.","Never silently change data; check it and record what you did."]},
+ "chart-makeover":{steps:["Look closely at the chart.","Choose what makes it misleading.","Read how to redesign it honestly."],
+  hints:["Check where the y-axis starts.","Check the spacing of time on the x-axis.","Check whether area or a running total exaggerates the story."]},
+ "classifier-arena":{steps:["Part 1: change k and compare training and test accuracy for k-nearest neighbours.","Part 2: change K and see how k-means groups the points.","Tap Start to answer the questions."],
+  hints:["Training accuracy can be misleading; test accuracy is the honest score.","Very small k overfits; very large k underfits.","For k-means, look for the elbow where adding clusters stops helping."]},
+ "fair-algorithm-council":{steps:["Read the case about an algorithm making decisions.","Your role is shown at the top. Argue from that view with your team.","Choose the council's best response."],
+  hints:["Compare outcomes and errors between groups.","A variable linked to a protected group can act as a proxy.","Check results for each subgroup, not just overall."]}
+};
+APP.HELP=H;
 })();
 /* ================= Games 1: intro + probability ================= */
 (function(){
