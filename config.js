@@ -11,6 +11,6 @@ window.SS_CONFIG = {
   contributors: [],
   /* Usage counts with GoatCounter (free, no cookies). Sign up at goatcounter.com, then put your code here,
      e.g. "iplaystats" for iplaystats.goatcounter.com. Leave "" to turn counting off. */
-  analyticsCode: "iplaystats",
-  version: "v0.4"
+  analyticsCode: "",
+  version: "v0.5.0"
 };

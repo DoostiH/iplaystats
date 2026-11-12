@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#2B55E0">
 <link rel="icon" href="icons/icon-192.png">
 <script src="config.js"></script>
+<script src="dict.js"></script>
+<script src="i18n.js"></script>
 <style>
 :root{--bg:#EEF2F5;--panel:#FFFFFF;--ink:#11212C;--muted:#5A6B77;--line:#D3DCE3;--accent:#2B55E0;--soft:#E4EAF0;color-scheme:light}
 @media (prefers-color-scheme: dark){:root{--bg:#0D161D;--panel:#15212A;--ink:#E7EEF3;--muted:#93A4B1;--line:#283844;--accent:#7C9BFF;--soft:#1C2A35;color-scheme:dark}}
@@ -21,7 +23,10 @@ ul{padding-left:20px}
 .terms{background:var(--soft);border-radius:10px;padding:10px 14px;font-size:.92rem}
 .btn{display:inline-block;background:var(--accent);color:#fff;text-decoration:none;font-weight:600;border-radius:10px;padding:10px 16px;margin-top:6px}
 a{color:var(--accent)}
+[dir="rtl"] ul{padding-left:0;padding-right:20px}
+[dir="rtl"] body{font-family:"Vazirmatn","IBM Plex Sans",system-ui,sans-serif}
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
 </head>
 <body>
 <main>
@@ -64,7 +69,7 @@ a{color:var(--accent)}
  if(c.contributors&&c.contributors.length){var ul=document.createElement("ul");c.contributors.forEach(function(n){var li=document.createElement("li");li.textContent=n;ul.appendChild(li)});$("people").innerHTML="";$("people").appendChild(ul)}
  var fb=$("fb");
  if(c.feedbackUrl){var a=document.createElement("a");a.className="btn";a.href=c.feedbackUrl;a.target="_blank";a.rel="noopener";a.textContent="Open the feedback form";fb.appendChild(a)}
- if(c.contactEmail){var p=document.createElement("p");p.textContent="Or email ";var s=document.createElement("span");s.style.userSelect="all";s.style.fontWeight="600";s.textContent=c.contactEmail;p.appendChild(s);fb.appendChild(p)}
+ if(c.contactEmail){var p=document.createElement("p");p.textContent="Or email ";var s=document.createElement("span");s.style.userSelect="all";s.setAttribute("translate","no");s.style.fontWeight="600";s.textContent=c.contactEmail;p.appendChild(s);fb.appendChild(p)}
 })();
 </script>
 </body>

@@ -7,6 +7,8 @@
 <meta name="theme-color" content="#2B55E0">
 <link rel="icon" href="icons/icon-192.png">
 <script src="config.js"></script>
+<script src="dict.js"></script>
+<script src="i18n.js"></script>
 <style>
 :root{--bg:#EEF2F5;--panel:#FFFFFF;--ink:#11212C;--muted:#5A6B77;--line:#D3DCE3;--accent:#2B55E0;color-scheme:light}
 @media (prefers-color-scheme: dark){:root{--bg:#0D161D;--panel:#15212A;--ink:#E7EEF3;--muted:#93A4B1;--line:#283844;--accent:#7C9BFF;color-scheme:dark}}
@@ -19,7 +21,10 @@ h2{font:600 1.1rem/1.3 "Bricolage Grotesque","Segoe UI",system-ui,sans-serif;mar
 p,li{color:var(--ink)}ul{padding-left:20px}
 .muted{color:var(--muted);font-size:.9rem}
 a{color:var(--accent)}
+[dir="rtl"] ul{padding-left:0;padding-right:20px}
+[dir="rtl"] body{font-family:"Vazirmatn","IBM Plex Sans",system-ui,sans-serif}
 </style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
 </head>
 <body>
 <main>
@@ -58,7 +63,7 @@ a{color:var(--accent)}
 </main>
 <script>
 (function(){var c=window.SS_CONFIG||{},el=document.getElementById("contact");if(!c.analyticsCode){var g=document.getElementById("gc");if(g)g.parentNode.removeChild(g)}
- if(c.contactEmail){el.textContent="Questions about privacy? Email ";var s=document.createElement("span");s.style.userSelect="all";s.style.fontWeight="600";s.textContent=c.contactEmail;el.appendChild(s);el.appendChild(document.createTextNode("."))}})();
+ if(c.contactEmail){el.textContent="Questions about privacy? Email ";var s=document.createElement("span");s.style.userSelect="all";s.setAttribute("translate","no");s.style.fontWeight="600";s.textContent=c.contactEmail;el.appendChild(s);el.appendChild(document.createTextNode("."))}})();
 </script>
 </body>
 </html>

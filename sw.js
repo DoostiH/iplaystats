@@ -1,7 +1,7 @@
 /* Offline support: keeps the app working without a connection after the first visit.
    Change CACHE when you upload a new version so phones pick up the update. */
-const CACHE = "iplaystats-v0.4";
-const CORE = ["./", "index.html", "config.js", "privacy.html", "about.html", "manifest.webmanifest",
+const CACHE = "iplaystats-v0.5.0";
+const CORE = ["./", "index.html", "config.js", "dict.js", "i18n.js", "privacy.html", "about.html", "manifest.webmanifest",
   "icons/icon-192.png", "icons/icon-512.png", "icons/icon-maskable-512.png", "icons/apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
