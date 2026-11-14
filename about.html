@@ -26,7 +26,7 @@ a{color:var(--accent)}
 [dir="rtl"] ul{padding-left:0;padding-right:20px}
 [dir="rtl"] body{font-family:"Vazirmatn","IBM Plex Sans",system-ui,sans-serif}
 </style>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
+<link rel="stylesheet" href="fonts.css">
 </head>
 <body>
 <main>
@@ -68,7 +68,7 @@ a{color:var(--accent)}
  $("copy").textContent="© 2026 "+owner+". All rights reserved.";
  if(c.contributors&&c.contributors.length){var ul=document.createElement("ul");c.contributors.forEach(function(n){var li=document.createElement("li");li.textContent=n;ul.appendChild(li)});$("people").innerHTML="";$("people").appendChild(ul)}
  var fb=$("fb");
- if(c.feedbackUrl){var a=document.createElement("a");a.className="btn";a.href=c.feedbackUrl;a.target="_blank";a.rel="noopener";a.textContent="Open the feedback form";fb.appendChild(a)}
+ var fu=(window.APP&&APP.lang==="zh"&&c.feedbackUrlZh)||c.feedbackUrl;if(fu){var a=document.createElement("a");a.className="btn";a.href=fu;a.target="_blank";a.rel="noopener";a.textContent="Open the feedback form";fb.appendChild(a)}
  if(c.contactEmail){var p=document.createElement("p");p.textContent="Or email ";var s=document.createElement("span");s.style.userSelect="all";s.setAttribute("translate","no");s.style.fontWeight="600";s.textContent=c.contactEmail;p.appendChild(s);fb.appendChild(p)}
 })();
 </script>

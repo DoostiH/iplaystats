@@ -1,0 +1,5 @@
+Bundled fonts, each licensed under the SIL Open Font License 1.1 (https://openfontlicense.org):
+- Bricolage Grotesque, Copyright The Bricolage Grotesque Project Authors
+- IBM Plex Sans and IBM Plex Mono, Copyright IBM Corp.
+- Vazirmatn, Copyright The Vazirmatn Project Authors
+These fonts are not covered by the iPlayStats licence.

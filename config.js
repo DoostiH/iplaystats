@@ -4,6 +4,9 @@ window.SS_CONFIG = {
   owner: "Hassan Doosti",
   /* Link to your feedback / game-idea form (e.g. a Google Form or Tally form). Leave "" to hide the button. */
   feedbackUrl: "https://forms.gle/bbdj174PAG47avHE9",
+  /* Optional: a separate feedback form for Chinese users (Google Forms is blocked in mainland China),
+     e.g. a form on wjx.cn or Tencent Docs. Leave "" to use feedbackUrl for everyone. */
+  feedbackUrlZh: "",
   /* Your personal contact email, shown in the footer and on the About and Privacy pages. Leave "" to hide it. */
   contactEmail: "",
   /* People to thank on the About page. Add names only, and only with their permission, e.g.
@@ -12,5 +15,5 @@ window.SS_CONFIG = {
   /* Usage counts with GoatCounter (free, no cookies). Sign up at goatcounter.com, then put your code here,
      e.g. "iplaystats" for iplaystats.goatcounter.com. Leave "" to turn counting off. */
   analyticsCode: "iplaystats",
-  version: "v0.5.0"
+  version: "v0.5.1"
 };
