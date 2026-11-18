@@ -15,5 +15,9 @@ window.SS_CONFIG = {
   /* Usage counts with GoatCounter (free, no cookies). Sign up at goatcounter.com, then put your code here,
      e.g. "iplaystats" for iplaystats.goatcounter.com. Leave "" to turn counting off. */
   analyticsCode: "iplaystats",
-  version: "v0.5.2"
+  /* Class sessions (class codes and live team boards) use a free Supabase project.
+     Paste your Project URL and Publishable key between the quotes. Leave both "" to hide class sessions. */
+  classUrl: "",
+  classKey: "",
+  version: "v0.6.0"
 };
