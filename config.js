@@ -17,7 +17,7 @@ window.SS_CONFIG = {
   analyticsCode: "iplaystats",
   /* Class sessions (class codes and live team boards) use a free Supabase project.
      Paste your Project URL and Publishable key between the quotes. Leave both "" to hide class sessions. */
-  classUrl: "",
-  classKey: "",
+  classUrl: "https://hobhzbyfstffybmuuspa.supabase.co",
+  classKey: "sb_publishable_p8qW9drOlldR_0YqW3VkSw_fDdww6Rd",
   version: "v0.6.0"
 };
