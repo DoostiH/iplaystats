@@ -19,5 +19,5 @@ window.SS_CONFIG = {
      Paste your Project URL and Publishable key between the quotes. Leave both "" to hide class sessions. */
   classUrl: "https://hobhzbyfstffybmuuspa.supabase.co",
   classKey: "sb_publishable_p8qW9drOlldR_0YqW3VkSw_fDdww6Rd",
-  version: "v0.6.0"
+  version: "v0.7.0"
 };
